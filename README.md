@@ -62,10 +62,10 @@ SampleAPI/
     └── launchSettings.json
 🚀 Running the Project
 1. Restore packages
-Code
+bash
 dotnet restore
 2. Run the API
-Code
+bash
 dotnet run
 3. Open Swagger UI
 Check the console output for the port, then open:
