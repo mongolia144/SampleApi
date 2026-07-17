@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Repositiory Pattern:
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+
+
 // EF Core InMemory
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("SampleDb"));
