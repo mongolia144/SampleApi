@@ -51,12 +51,22 @@ SampleAPI/
 │   └── MoviesController.cs
 ├── Data/
 │   └── AppDbContext.cs
+├── DTO/
+│   └── MovieDTOAdd.cs
+│   └── MovieDTORead.cs
+│   └── MovieDTOUpdate.cs
 ├── Interfaces/
 │   └── IMovieRepositiory.cs
+│   └── IMovieService.cs
+├── Mappings/
+│   └── MovieMaping.cs
 ├── Models/
 │   └── Movie.cs
 ├── Repositories/
-│   └── MovieRepository.cs│
+│   └── MovieRepository.cs
+├── Services/
+│   └── MovieService.cs
+├── Validators/
 ├── Program.cs
 ├── SampleAPI.csproj
 └── Properties/
@@ -77,9 +87,11 @@ dotnet run
 
 Check the console output for the port, then open:
 
-https://localhost:<port>/swagger
+http://localhost:<port>/swagger/index.html
 
 Swagger UI will display all available endpoints.
+
+Ex: http://localhost:5138/swagger/index.html
 
 ---
 
@@ -109,17 +121,20 @@ DELETE /api/items/{id}
 
 ## 🧠 Design Decisions
 
-- EF Core InMemory chosen for simplicity and zero setup
-- Swagger enabled globally because this is a demo project
-- Minimal Program.cs to highlight clarity over complexity
+- Repository Pattern added to isolate data access logic and keep persistence concerns out of controllers
+- Service Layer introduced to encapsulate business logic and orchestrate operations between controller and repository
+- DTOs added to safely exchange data between controller and service without exposing domain models
+- EF Core InMemory chosen for simplicity and zero setup during development
+- Swagger enabled only in Development to avoid exposing API metadata in Production
+- Minimal Program.cs kept to highlight clarity over complexity
 - No external database to keep onboarding friction low
-- Modern OpenAPI pipeline to align with .NET 10 best practices
+- Modern OpenAPI pipeline aligned with .NET 10 best practices
 
 ---
 
 ## 📈 Future Improvements
 
-- Add DTOs and validation
+- Add validation
 - Add a real database (SQL Server or PostgreSQL)
 - Add authentication (JWT)
 - Add unit tests
