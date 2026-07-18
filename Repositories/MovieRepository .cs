@@ -4,6 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 public class MovieRepository : IMovieRepository
 {
+    //ASYNC RULE
+    //If your method uses await, it must be async.
+    //If your method returns a Task directly, it must NOT be async
+
     private readonly AppDbContext _db;
 
     public MovieRepository(AppDbContext db)
@@ -23,8 +27,10 @@ public class MovieRepository : IMovieRepository
 
     public async Task Add(Movie movie)
     {
-        _db.Movies.Add(movie);
+        _db.Movies.Add(movie);        
         await _db.SaveChangesAsync();
+        //EF Core generates the Id, assigns it to movie.Id, that we just passed in as a parameter and tracks it.
+        //So after SaveChangesAsync(), your movie object already contains the generated Id.
     }
 
     public async Task Update(Movie movie)
