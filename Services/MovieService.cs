@@ -4,6 +4,8 @@ using SampleApi.Models;
 using SampleApi.DTOs.Movies;
 using Microsoft.EntityFrameworkCore;
 using SampleApi.Mappings.MovieMapping;
+using SampleApi.Results;
+
 
 namespace SampleApi.Services.MovieServices;
 class MovieService : IMovieService
@@ -12,10 +14,12 @@ class MovieService : IMovieService
     //If your method uses await, it must be async.
     //If your method returns a Task directly, it must NOT be async
     private readonly IMovieRepository _movieRepository;
+    private readonly IMovieValidator _movieValidator;
 
-    public MovieService(IMovieRepository movieRepository)
+    public MovieService(IMovieRepository movieRepository, IMovieValidator movieValidator)
     {
         _movieRepository = movieRepository;
+        _movieValidator = movieValidator;
     }
 
     public async Task<IEnumerable<MovieDTORead>> GetAll()
@@ -37,17 +41,21 @@ class MovieService : IMovieService
 
         return MovieMapping.MapFromMovieEntityToMovieDTORead(movieEntity);
     }
-    public async Task<MovieDTORead> Add(MovieDTOAdd movieDTOAdd)
+    public async Task<ServiceResult<MovieDTORead>> Add(MovieDTOAdd movieDTOAdd)
     {
-        // validate
-
+        var serviceResult = new ServiceResult<MovieDTORead>();
         // map
         var movieEntity = MovieMapping.MapFromMovieDTOAddToMovieEntity(movieDTOAdd);
+        // validate
+        var validationResult = _movieValidator.Validate(movieEntity);
+        if (!validationResult.IsValid)
+            return ServiceResult<MovieDTORead>.Fail(validationResult.Errors); 
         //EF Core tracks the entity that we have just added
-        await _movieRepository.Add(movieEntity);
-        return MovieMapping.MapFromMovieEntityToMovieDTORead(movieEntity);
+        await _movieRepository.Add(movieEntity);  
+        var dtoRead = MovieMapping.MapFromMovieEntityToMovieDTORead(movieEntity);      
+        return ServiceResult<MovieDTORead>.Ok(dtoRead);
     }  
-    public async Task<MovieDTORead?> Update(string id, MovieDTOUpdate movieDTOUpdate)
+    public async Task<ServiceResult<MovieDTORead>> Update(string id, MovieDTOUpdate movieDTOUpdate)
     {
         //MovieDTORead?? = Because the service might not find the movie, and you need a way to express that possibility in the return type.
         //The service should always return MovieDTORead, never MovieDTOUpdate
@@ -59,22 +67,38 @@ class MovieService : IMovieService
         //DTOUpdate does not represent the final state of the entity
         //DTOUpdate is not what clients expect after an update
         //DTOUpdate is not used anywhere else in your API
+
         var movieEntity = await _movieRepository.GetById(id);
 
         if (movieEntity == null)
-            return null;
+            return  ServiceResult<MovieDTORead>.Fail(["Entity Not Found"]);
 
         movieEntity.Title = movieDTOUpdate.Title;
         movieEntity.Year = movieDTOUpdate.Year;
 
+        var validationResult = _movieValidator.Validate(movieEntity);
+        if (!validationResult.IsValid)
+            return ServiceResult<MovieDTORead>.Fail(validationResult.Errors); 
+
         await _movieRepository.Update(movieEntity);
-        return MovieMapping.MapFromMovieEntityToMovieDTORead(movieEntity);
+        var dtoRead = MovieMapping.MapFromMovieEntityToMovieDTORead(movieEntity);      
+        return ServiceResult<MovieDTORead>.Ok(dtoRead);
     }
-    public async Task<bool> Delete(string id)
+    public async Task<ServiceResult<bool>> Delete(string id)
     {
         //if the entity cannot be found the EF will return false.
-        var deleted = await _movieRepository.Delete(id);
-        return deleted;
+        //var deleted = await _movieRepository.Delete(id);
+        //return deleted;
+
+        var movie = await _movieRepository.GetById(id);
+        if (movie == null)
+            return ServiceResult<bool>.Fail(["Entity Not Found"]);
+        // Optional: cross-entity validation
+        //var validation = _movieValidator.Validate(movie);
+        //if (!validation.IsValid)
+        //    return ServiceResult<bool>.Fail(validation.Errors);
+        await _movieRepository.Delete(movie);
+        return ServiceResult<bool>.Ok(true);
     }
 
 }

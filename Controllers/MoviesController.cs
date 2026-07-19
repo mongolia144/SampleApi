@@ -28,18 +28,7 @@ public class MoviesController : ControllerBase
         return await _movieService.GetAll();
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create(MovieDTOAdd movieDTOAdd)
-    {
-        var movieEntityCreated =await _movieService.Add(movieDTOAdd);
-        //CreatedAtAction is NOT from EF Core.  
-        //It comes from ASP.NET Core MVC, specifically from the ControllerBase class.
-        //⭐ What CreatedAtAction actually does
-        //It builds an HTTP 201 Created response and includes:
-        //the Location header (URL of the newly created resource)
-        //the response body (your DTO)
-        return CreatedAtAction(nameof(GetById), new { id = movieEntityCreated.Id }, movieEntityCreated);
-    }
+    
 
     [HttpGet("{id}")]
     public async Task<ActionResult<MovieDTORead>> GetById(string id)
@@ -52,22 +41,42 @@ public class MoviesController : ControllerBase
         return MovieDTORead;
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Create(MovieDTOAdd movieDTOAdd)
+    {
+        var serviceResult =await _movieService.Add(movieDTOAdd);
+        if (!serviceResult.Success)
+            return BadRequest(serviceResult.Errors);
+        
+        //CreatedAtAction is NOT from EF Core.  
+        //It comes from ASP.NET Core MVC, specifically from the ControllerBase class.
+        //⭐ What CreatedAtAction actually does
+        //It builds an HTTP 201 Created response and includes:
+        //the Location header (URL of the newly created resource)
+        //the response body (your DTO)
+        return CreatedAtAction(nameof(GetById), new { id = serviceResult.Data!.Id }, serviceResult.Data);
+        // null‑forgiving operator: serviceResult.Data!.Id
+        // serviceResult.Data!.Id: serviceResult.Data can be null, so Data.Id would fail.
+        // It tells the compiler:I know this value is not null here — trust me.
+    }
+
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(string id, MovieDTOUpdate movieDTOUpdate)
     {
-        var updated = await _movieService.Update(id, movieDTOUpdate);
-        if (updated == null) return NotFound();
-        return Ok(updated);
+        var serviceResult =await _movieService.Update(id, movieDTOUpdate);
+        if (!serviceResult.Success)
+            return BadRequest(serviceResult.Errors);
+        return Ok(serviceResult.Data);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
-        var deleted = await _movieService.Delete(id);
+        var serviceResult = await _movieService.Delete(id);
 
-        if (!deleted)
-            return NotFound();
+        if (!serviceResult.Success)
+            return BadRequest(serviceResult.Errors);
 
-        return NoContent();
+        return Ok(true); 
     }
 }

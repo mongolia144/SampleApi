@@ -3,6 +3,7 @@ using SampleApi.Data;
 using Microsoft.AspNetCore.OpenApi;
 using SampleApi.Services.MovieServices;
 using SampleApi.Interfaces.MovieInterfaces;
+using SampleAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 //One instance for the whole app.
 //Cannot use DbContext (not thread‑safe).
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IMovieValidator, MovieValidator>();
 //Repositiory Pattern:
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 

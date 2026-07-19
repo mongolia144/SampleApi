@@ -58,15 +58,20 @@ SampleAPI/
 ├── Interfaces/
 │   └── IMovieRepositiory.cs
 │   └── IMovieService.cs
+│   └── IMovieValidator.cs
 ├── Mappings/
 │   └── MovieMaping.cs
 ├── Models/
 │   └── Movie.cs
 ├── Repositories/
 │   └── MovieRepository.cs
+├── Results/
+│   └── ServiceResults.cs
 ├── Services/
 │   └── MovieService.cs
 ├── Validators/
+│   └── MovieValidator.cs
+│   └── ValidationResult.cs
 ├── Program.cs
 ├── SampleAPI.csproj
 └── Properties/
@@ -121,14 +126,18 @@ DELETE /api/items/{id}
 
 ## 🧠 Design Decisions
 
-- Repository Pattern added to isolate data access logic and keep persistence concerns out of controllers
-- Service Layer introduced to encapsulate business logic and orchestrate operations between controller and repository
+- Repository Pattern added to isolate data access logic and keep persistence concerns out of controllers.
+- Service Layer introduced to encapsulate business logic and orchestrate operations between controller and repository.
+- Dependency Injection used throughout the application to register repositories, services, and validators, ensuring loose coupling and testability.
 - DTOs added to safely exchange data between controller and service without exposing domain models
-- EF Core InMemory chosen for simplicity and zero setup during development
-- Swagger enabled only in Development to avoid exposing API metadata in Production
-- Minimal Program.cs kept to highlight clarity over complexity
-- No external database to keep onboarding friction low
-- Modern OpenAPI pipeline aligned with .NET 10 best practices
+- Validation Layer added to enforce business rules using entity validators and service‑level result objects.
+- ServiceResult pattern adopted to standardize service responses, ensuring controllers receive structured success flags, data payloads, and validation errors instead of raw DTOs or entities.
+- EF Core InMemory chosen for simplicity and zero setup during development.
+- Swagger enabled only in Development to avoid exposing API metadata in Production.
+- Minimal Program.cs kept to highlight clarity over complexity.
+- No external database to keep onboarding friction low.
+- Modern OpenAPI pipeline aligned with .NET 10 best practices.
+
 
 ---
 

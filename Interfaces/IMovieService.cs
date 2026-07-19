@@ -1,12 +1,12 @@
-namespace SampleApi.Interfaces.MovieInterfaces;
-
 using SampleApi.DTOs.Movies;
+using SampleApi.Results;
 
+namespace SampleApi.Interfaces.MovieInterfaces;
 public interface IMovieService
 {
     Task<IEnumerable<MovieDTORead>> GetAll();
     Task<MovieDTORead?> GetById(string id);
-    Task<MovieDTORead> Add(MovieDTOAdd movie);
-    Task<MovieDTORead?> Update(string id, MovieDTOUpdate movie);
-    Task<bool> Delete(string id);
+    Task<ServiceResult<MovieDTORead>> Add(MovieDTOAdd movieDTOAdd);
+    Task<ServiceResult<MovieDTORead>> Update(string id, MovieDTOUpdate movieDTOUpdate);
+    Task<ServiceResult<bool>> Delete(string id);
 }

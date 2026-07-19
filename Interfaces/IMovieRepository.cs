@@ -15,5 +15,5 @@ public interface IMovieRepository
     Task<Movie?> GetById(string id);
     Task Add(Movie movie);   
     Task Update(Movie movie);
-    Task<bool> Delete(string id);
+    Task Delete(Movie movie);
 }
