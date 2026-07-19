@@ -143,7 +143,6 @@ DELETE /api/items/{id}
 
 ## 📈 Future Improvements
 
-- Add validation
 - Add a real database (SQL Server or PostgreSQL)
 - Add authentication (JWT)
 - Add unit tests
