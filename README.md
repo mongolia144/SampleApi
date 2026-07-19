@@ -7,12 +7,6 @@ Designed for clarity, testability, and minimal dependencies.
 
 ## ✨ Features
 
-- Modern .NET 10 API using the latest ASP.NET Core hosting model
-- Swagger/OpenAPI enabled for all environments (demo mode)
-- EF Core InMemory database for fast, dependency‑free testing
-- Clean Program.cs with minimal boilerplate
-- RESTful controller structure
-- Zero external dependencies beyond EF Core + Swagger
 - Modern **.NET 10** hosting model
 - Clean **RESTful** controller structure
 - **JWT Authentication** with Bearer tokens
