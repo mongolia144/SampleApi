@@ -8,7 +8,7 @@ using SampleApi.Results;
 
 
 namespace SampleApi.Services.MovieServices;
-class MovieService : IMovieService
+public class MovieService : IMovieService
 {
     //ASYNC RULE
     //If your method uses await, it must be async.
