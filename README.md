@@ -152,7 +152,7 @@ Content-Type: application/json
 
 ### ❌ Delete Movie
 http://localhost:5138/api/movies/{id}
-Headers:
+- Headers:
 Authorization: Bearer <token>
 Content-Type: application/json
 
