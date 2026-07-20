@@ -121,30 +121,30 @@ No quotes around the token.
 ## 🎬 Movies API Endpoints
 All movie endpoints require a valid JWT token.
 
-### ➕ Create a Movie
+### 1. ➕ Create a Movie
 
-POST: http://localhost:5138/api/movies
-Headers:
+- POST: http://localhost:5138/api/movies
+- Headers:
 Authorization: Bearer <token>
 Content-Type: application/json
-Body:
+- Body:
 {
   "title": "Inception",
   "year": 2010
 }
 
-### 📄 Get All Movies
+### 2. 📄 Get All Movies
 GET: http://localhost:5138/api/movies
 
-### 🔍 Get Movie by ID
+### 3. 🔍 Get Movie by ID
 GET: http://localhost:5138/api/movies/{id}
 
-### ✏️ Update Movie
+### 4. ✏️ Update Movie
 PUT: http://localhost:5138/api/movies/{id}
-Headers:
+- Headers:
 Authorization: Bearer <token>
 Content-Type: application/json
-Body:
+- Body:
 {
   "title": "Matrix",
   "year": 1999
@@ -158,17 +158,6 @@ Content-Type: application/json
 
 ## Architecture Overview
 
-### Data Flow
-
-**Controller** <--------------------------------------> **Service** <--------------------------> **Repository** <-------------->**AppDbContext**
-Routing                                             Validates Request                           Encapsulates DB actions:          Tables definitions
-Authernticate                                       Maps DTOs into EF Entities                                              
-Maps Requests to DTO                                Invokes EF Actions                                                    
-Returns:                                            Returns: 
-IAction:Ok(Data),                                   ServiceResults:Success,Errors
-BadRequest(Errors)        
-
-- If a method has an explicit await inside must be declared as async
 
 ### Repository Pattern
 Keeps persistence logic isolated and testable.
