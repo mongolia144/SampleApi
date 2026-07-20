@@ -102,12 +102,12 @@ Swagger has been removed, so authentication is performed using Postman or simila
 ### 1. Login to obtain a JWT token
 
 POST: http://localhost:5138/auth/login
-Body (JSON):
+- Body (JSON):
 {
   "Email": "test@example.com",
   "Password": "password123"
 }
-Response: 
+- Response: 
 {
   "token": "<your JWT token>"
 }
