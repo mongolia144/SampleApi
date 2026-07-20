@@ -107,11 +107,18 @@ This keeps sensitive values out of source control and ensures each developer can
 ### 🗝️ 1. Navigate to the project folder
 Run this from the terminal, pointing to the folder containing your .csproj file:
 
-bash
+<pre>
 cd YourProject.Api
+</pre>
+Ex:
+<pre>
+cd SampleApi
+</pre>
+
 ### 🗝️ 2. Initialize User Secrets (only needed once)
-bash
+<pre>
 dotnet user-secrets init
+</pre>
 This links a secure local secrets store to your project.
 
 ### 🗝️ 3. Add the JWT signing key
