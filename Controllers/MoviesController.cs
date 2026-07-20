@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using SampleApi.Models;
 using SampleApi.DTOs.Movies;
-
-namespace SampleApi.Controllers;
 using SampleApi.Services.MovieServices;
 using SampleApi.Interfaces.MovieInterfaces;
 using Microsoft.AspNetCore.Authorization;
+
+namespace SampleApi.Controllers;
+
 
 
 //using the repositiory pattern

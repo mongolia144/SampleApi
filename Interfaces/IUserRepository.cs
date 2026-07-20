@@ -5,5 +5,5 @@ namespace SampleApi.Interfaces.UserInterfaces;
 
 public interface IUserRepository
 {
-    User? GetByEmail(string email);
+    Task<User?> GetByEmail(string email);
 }

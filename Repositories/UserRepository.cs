@@ -1,22 +1,22 @@
 using SampleApi.Models;
+using SampleApi.DTOs.Auth;
 using SampleApi.Interfaces.UserInterfaces;
+using Microsoft.EntityFrameworkCore;
+using SampleApi.Data;
 
 namespace SampleApi.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    // Temporary in-memory user list
-    private readonly List<User> _users = new()
-    {
-        new User
-        {
-            Email = "test@example.com",
-            Password = "password123"
-        }
-    };
+    private readonly AppDbContext _db;
 
-    public User? GetByEmail(string email)
+    public UserRepository(AppDbContext db)
     {
-        return _users.FirstOrDefault(u => u.Email == email);
+        _db = db;
+    }
+    public async Task<User?> GetByEmail(string email)
+    {
+        //we don not use .FindAsync(u => u.Email == email) because email is not a primary key
+        return await _db.Users.FirstOrDefaultAsync(u => u.Email == email);;
     }
 }

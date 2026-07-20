@@ -16,18 +16,14 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginDto dto)
+    public async Task<IActionResult> Login(LoginDTO loginDTO)
     {
-        var user = _authService.ValidateUser(dto.Email, dto.Password);
+        var serviceResult = await _authService.Login(loginDTO);
 
-        if (user is null)
-            return Unauthorized("Invalid email or password");
+        if (!serviceResult.Success)
+            return BadRequest(serviceResult.Errors);
 
-        // ⭐ Next step: generate JWT token here
-        var token = _authService.GenerateJwtToken(user);
-        return Ok(new
-        {
-            Token = token
-        });
+        return Ok(serviceResult.Data);
     }
+
 }

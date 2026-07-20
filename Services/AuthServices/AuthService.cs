@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using SampleApi.DTOs.Auth;
+using SampleApi.Results;
 
 namespace SampleApi.Services.AuthServices;
 
@@ -16,20 +18,25 @@ public class AuthService : IAuthService
     public AuthService(IUserRepository userRepository,  IConfiguration config)
     {
         _userRepository = userRepository;
-         _config = config;
+        _config = config;
     }
 
-    public User? ValidateUser(string email, string password)
+    public async Task<ServiceResult<AuthResponseDTO>> Login(LoginDTO loginDTO)
     {
-        var user = _userRepository.GetByEmail(email);
+        var user = await _userRepository.GetByEmail(loginDTO.Email);
 
-        if (user is null)
-            return null;
+        if (user == null || user.Password != loginDTO.Password)
+            return ServiceResult<AuthResponseDTO>.Fail(["Invalid email or password"]);
 
-        if (user.Password != password)
-            return null;
+        var token = this.GenerateJwtToken(user);
 
-        return user;
+        var response = new AuthResponseDTO
+        {
+            Token = token,
+            Email = user.Email
+        };
+
+        return ServiceResult<AuthResponseDTO>.Ok(response);
     }
 
     public string GenerateJwtToken(User user)

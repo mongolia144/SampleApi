@@ -29,6 +29,8 @@ var audience = jwtSettings.GetValue<string>("Audience")
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IMovieValidator, MovieValidator>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 
 //User Repositiory
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -42,43 +44,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Controllers
 builder.Services.AddControllers();
-
-// Swagger
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen(c =>
-//{
-//    c.SwaggerDoc("v1", new OpenApiInfo
-//    
-//        Title = "Sample API",
-//        Version = "v1"
-//    });
-//
-//    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-//    {
-//        In = ParameterLocation.Header,
-//        Description = "Paste your JWT token here",
-//        Name = "Authorization",
-//        Type = SecuritySchemeType.Http,
-//        Scheme = "Bearer",
-//        BearerFormat = "JWT"
-//    });
-//
-//    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-//    {
-//        {
-//            new OpenApiSecurityScheme
-//            {
-//                Reference = new OpenApiReference
-//                {
-//                    Type = ReferenceType.SecurityScheme,
-//                    Id = "Bearer"
-//                }
-//            },
-//            new string[] {}
-//        }
-//    });
-//});
-
 
 // ⭐ Register Authentication + JWT Bearer
 builder.Services.AddAuthentication(options =>
@@ -108,14 +73,9 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Swagger only in Development
+
 if (app.Environment.IsDevelopment())
 {
-    //app.UseSwagger();
-    //app.UseSwaggerUI(c =>
-    //{
-    //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample API v1");
-    //});
 }
 
 
@@ -124,5 +84,18 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Test if user exist : uncomment this line to verify if you cannot login
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//
+//    db.Database.EnsureDeleted();   // optional, but useful while debugging
+//    db.Database.EnsureCreated();   // this is what triggers HasData
+//
+//    var users = db.Users.ToList();
+//    Console.WriteLine($"Seeded users: {users.Count}");
+//}
+
 
 app.Run();
