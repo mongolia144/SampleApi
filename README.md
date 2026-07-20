@@ -36,7 +36,7 @@ Designed for clarity, testability, and minimal dependencies.
 <pre>
 SampleApi/
 ├── SampleApi/
-│   └──Controllers/
+│   ├──Controllers/
 │   │     ├── AuthController.cs
 │   │     └── MoviesController.cs
 │   ├── Data/
@@ -76,7 +76,7 @@ SampleApi/
 │   ├───SampleAPI.csproj
 │   └───Properties/
 │          └── launchSettings.json
-├── SampleAPI.Api/
+└── SampleAPI.Api/
 </pre>
 
 ---
