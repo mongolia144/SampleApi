@@ -34,48 +34,49 @@ Designed for clarity, testability, and minimal dependencies.
 ## 📁 Project Structure
 
 <pre>
-SampleAPI/
-│
-├── Controllers/
-│   └── AuthController.cs
-│   └── MoviesController.cs
-├── Data/
-│   └── AppDbContext.cs
-├── DTO/
-│   ├── Auth/
-│   │   └── AuthResponseDTO.cs
-│   │   └── LoginDTO.cs
-│   └── MovieDTOAdd.cs
-│   └── MovieDTOAdd.cs
-│   └── MovieDTORead.cs
-│   └── MovieDTOUpdate.cs
-├── Interfaces/
-│   └── IAuthService.cs
-│   └── IMovieRepositiory.cs
-│   └── IMovieService.cs
-│   └── IMovieValidator.cs
-│   └── IUserRepository.cs
-├── Mappings/
-│   └── MovieMaping.cs
-├── Models/
-│   └── Movie.cs
-│   └── User.cs
-├── Repositories/
-│   └── MovieRepository.cs
-│   └── UserRepository.cs
-├── Results/
-│   └── ServiceResults.cs
-├── Services/
-│   └── AuthServices
-│   │   └── AuthService.cs
-│   └── MovieService.cs
-├── Validators/
-│   └── MovieValidator.cs
-│   └── ValidationResult.cs
-├── Program.cs
-├── SampleAPI.csproj
-└── Properties/
-    └── launchSettings.json
+SampleApi/
+├── SampleApi/
+│   └──Controllers/
+│   │     ├── AuthController.cs
+│   │     └── MoviesController.cs
+│   ├── Data/
+│   │     └── AppDbContext.cs
+├   ├── DTO/
+│   │     ├── Auth/
+│   │     │    └──AuthResponseDTO.cs
+│   │     ├── LoginDTO.cs
+│   │     ├── MovieDTOAdd.cs
+│   │     ├── MovieDTOAdd.cs
+│   │     ├── MovieDTORead.cs
+│   │     └── MovieDTOUpdate.cs
+│   ├───Interfaces/
+│   │      ├──IAuthService.cs
+│   │      ├──IMovieRepositiory.cs
+│   │      ├──IMovieService.cs
+│   │      ├──IMovieValidator.cs
+│   │      └──IUserRepository.cs
+│   ├───Mappings/
+│   │      └── MovieMaping.cs
+│   ├───Models/
+│   │      ├── Movie.cs
+│   │      └── User.cs
+│   ├───Repositories/
+│   │      ├── MovieRepository.cs
+│   │      └── UserRepository.cs
+│   ├───Results/
+│   │      └── ServiceResults.cs
+│   ├───Services/
+│   │      ├── AuthServices
+│   │      │    └── AuthService.cs
+│   │      └── MovieService.cs
+│   ├───Validators/
+│   │      ├── MovieValidator.cs
+│   │      └── ValidationResult.cs
+│   ├───Program.cs
+│   ├───SampleAPI.csproj
+│   └───Properties/
+│          └── launchSettings.json
+├── SampleAPI.Api/
 </pre>
 
 ---
