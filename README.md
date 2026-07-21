@@ -250,6 +250,48 @@ Secures protected endpoints using Bearer tokens.
 ### Minimal Program.cs
 Focused, clean, and free of Swagger/OpenAPI dependencies.
 
+## 🧪 Tests
+
+The project includes a dedicated **Tests** folder containing unit tests for the `MovieService`.
+
+### ✔ What is tested
+
+- **GetAll**
+  - Returns mapped DTOs
+  - Returns empty list
+
+- **GetById**
+  - Returns DTO when found
+  - Returns null when not found
+
+- **Add**
+  - Success path
+  - Validation failure
+  - Mapping correctness (DTOAdd → Entity → DTORead)
+
+- **Update**
+  - Success path
+  - Entity not found
+  - Validation failure
+  - Mapping correctness
+
+- **Delete**
+  - Success path
+  - Entity not found
+  - Repository interaction correctness
+
+### ✔ Tools & Patterns Used
+
+- **Moq** for mocking repository and validator dependencies  
+- **Callback capture** to verify mapping correctness  
+- **Arrange–Act–Assert** test structure  
+- **Repository interaction verification** (`Times.Once`, `Times.Never`)  
+- **ServiceResult<T>** success/error assertions  
+
+### ✔ Running the Tests
+
+From the project root: dotnet test
+
 
 ## 📈 Future Improvements
 
