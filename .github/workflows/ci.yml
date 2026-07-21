@@ -20,13 +20,10 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Restore dependencies
-      working-directory: SampleApi
       run: dotnet restore SampleApi.sln
 
     - name: Build solution
-      working-directory: SampleApi
       run: dotnet build SampleApi.sln --configuration Release --no-restore
 
     - name: Run tests
-      working-directory: SampleApi
       run: dotnet test SampleApi.sln --no-build --verbosity normal
