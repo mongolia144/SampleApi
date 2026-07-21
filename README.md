@@ -298,7 +298,7 @@ From the project root: dotnet test
 - Add a real database (SQL Server / PostgreSQL)
 - Add role‑based authorization
 - Add password hashing + registration
-- Add unit tests
+- Add unit tests ( task ongoing).
 - Add CI/CD pipeline
 - Add API versioning
 
