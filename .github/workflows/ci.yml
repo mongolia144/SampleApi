@@ -31,7 +31,7 @@ jobs:
     - name: Run tests
       run: dotnet test SampleApi.Test/SampleApi.Test.csproj --no-build --verbosity normal
       env:
-        VSTEST_BUILD_DISABLE: 1
+        DOTNET_TEST_RUNNER: vstest
 
 
 
