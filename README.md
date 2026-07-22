@@ -56,6 +56,7 @@ SampleApi/
 │   │      ├──IMovieService.cs
 │   │      ├──IMovieValidator.cs
 │   │      └──IUserRepository.cs
+│   │      └──IPasswordHasher.cs
 │   ├───Mappings/
 │   │      └── MovieMaping.cs
 │   ├───Models/
@@ -69,6 +70,7 @@ SampleApi/
 │   ├───Services/
 │   │      ├── AuthServices/
 │   │      │   ├─── AuthService.cs
+│   │      │   ├─── PasswordHasher.cs
 │   │      └── MovieService.cs
 │   ├───Validators/
 │   │      ├── MovieValidator.cs
