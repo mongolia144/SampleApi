@@ -1,4 +1,6 @@
-﻿namespace SampleApi.Test;
+﻿using Xunit;
+
+namespace SampleApi.Test;
 
 public class UnitTest1
 {
