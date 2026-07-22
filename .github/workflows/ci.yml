@@ -25,7 +25,5 @@ jobs:
     - name: Build solution
       run: dotnet build SampleApi.sln --configuration Release --no-restore
 
-    - name: Run tests
-      run: dotnet test SampleApi.Test/SampleApi.Test.csproj --no-build --verbosity normal
-
-
+    - name: Run VSTest
+      run: dotnet msbuild SampleApi.Test/SampleApi.Test.csproj /t:VSTest /p:Configuration=Release
