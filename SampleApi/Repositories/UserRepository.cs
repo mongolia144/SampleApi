@@ -13,8 +13,9 @@ public class UserRepository : IUserRepository
     public UserRepository(AppDbContext db)
     {
         _db = db;
-        // 🔥 Add this line here
-        Console.WriteLine("Repository DbContext hash: " + _db.GetHashCode());
+        // 🔥 Add this line here to see if the hash generated s the same as on creation
+        // different hashes, different instances, and records might not be found
+        //Console.WriteLine("Repository DbContext hash: " + _db.GetHashCode());
     }
     public async Task<User?> GetByEmail(string email)
     {

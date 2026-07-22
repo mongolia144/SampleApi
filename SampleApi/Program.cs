@@ -85,33 +85,35 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    Console.WriteLine("Startup DbContext hash: " + db.GetHashCode());
-}
+//Test the has of the database on creation to see if it is the same as when is invoked by the user
+// different values indicate that many instances exist and records can be not found.
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//    Console.WriteLine("Startup DbContext hash: " + db.GetHashCode());
+//}
 
 
 // Test if user exist : uncomment this line to verify if you cannot login
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//
+//    db.Database.EnsureDeleted();   // optional, but useful while debugging
+//    db.Database.EnsureCreated();   // this is what triggers HasData
+//
+//    var users = db.Users.ToList();
+//    Console.WriteLine($"Seeded users: {users.Count}");
+//    foreach (var user in users)
+//    {
+//        Console.WriteLine("---- USER ----");
+//        Console.WriteLine("Id: " + user.Id);
+//        Console.WriteLine("Email: " + user.Email);
+//        Console.WriteLine("Salt: " + user.Salt);
+//        Console.WriteLine("HashedPassword: " + user.HashedPassword);
+//    }
 
-    db.Database.EnsureDeleted();   // optional, but useful while debugging
-    db.Database.EnsureCreated();   // this is what triggers HasData
-
-    var users = db.Users.ToList();
-    Console.WriteLine($"Seeded users: {users.Count}");
-    foreach (var user in users)
-    {
-        Console.WriteLine("---- USER ----");
-        Console.WriteLine("Id: " + user.Id);
-        Console.WriteLine("Email: " + user.Email);
-        Console.WriteLine("Salt: " + user.Salt);
-        Console.WriteLine("HashedPassword: " + user.HashedPassword);
-    }
-
-}
+//}
 
 
 app.Run();
