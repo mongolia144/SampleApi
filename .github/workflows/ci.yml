@@ -30,10 +30,11 @@ jobs:
         dotnet msbuild SampleApi.Test/SampleApi.Test.csproj \
           /t:VSTest \
           /p:Configuration=Release \
-          /p:VSTestCollect="XPlat Code Coverage"
+          /p:VSTestCollect="XPlat Code Coverage" \
+          /p:VSTestResultsDirectory=SampleApi.Test/TestResults/Coverage
 
     - name: Upload coverage report
       uses: actions/upload-artifact@v4
       with:
         name: coverage
-        path: SampleApi.Test/TestResults/
+        path: SampleApi.Test/TestResults/Coverage/
