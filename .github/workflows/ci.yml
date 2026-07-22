@@ -27,9 +27,5 @@ jobs:
 
     - name: Run tests
       run: dotnet test SampleApi.Test/SampleApi.Test.csproj --no-build --verbosity normal
-    
-    - name: Run tests
-      run: dotnet test SampleApi.Test/bin/Debug/net8.0/SampleApi.Test.dll
-
 
 
