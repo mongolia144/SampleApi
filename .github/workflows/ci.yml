@@ -25,5 +25,16 @@ jobs:
     - name: Build solution
       run: dotnet build SampleApi.sln --configuration Release --no-restore
 
-    - name: Run VSTest
-      run: dotnet msbuild SampleApi.Test/SampleApi.Test.csproj /t:VSTest /p:Configuration=Release
+    - name: Run VSTest with coverage
+      run: dotnet msbuild SampleApi.Test/SampleApi.Test.csproj \
+            /t:VSTest \
+            /p:Configuration=Release \
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=lcov \
+            /p:CoverletOutput=../TestResults/coverage.info
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage
+        path: SampleApi.Test/TestResults/coverage.info
