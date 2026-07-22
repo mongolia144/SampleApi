@@ -1,9 +1,9 @@
 
 using SampleApi.Models;
-using SampleAPI.Validators;
+using SampleApi.Validators;
 using SampleApi.Interfaces.MovieInterfaces;
 
-namespace SampleAPI.Validators;
+namespace SampleApi.Validators;
 public class MovieValidator: IMovieValidator
 {
     public ValidationResult Validate(Movie movie)

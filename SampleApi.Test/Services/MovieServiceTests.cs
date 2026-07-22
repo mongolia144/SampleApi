@@ -7,7 +7,7 @@ using SampleApi.Models;
 using SampleApi.Interfaces.MovieInterfaces;
 using SampleApi.Services.MovieServices;
 using SampleApi.DTOs.Movies;
-using SampleAPI.Validators;
+using SampleApi.Validators;
 using System.Net.Cache;
 
 

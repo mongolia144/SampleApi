@@ -1,4 +1,4 @@
-namespace SampleAPI.Validators;
+namespace SampleApi.Validators;
 public class ValidationResult
 {
     public bool IsValid { get; set; }

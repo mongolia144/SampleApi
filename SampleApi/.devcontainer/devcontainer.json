@@ -7,7 +7,7 @@
 //Automatic dotnet restore on startup
 
 {
-  "name": "SampleAPI DevContainer",
+  "name": "SampleApi DevContainer",
   "dockerFile": "Dockerfile",
 
   "features": {

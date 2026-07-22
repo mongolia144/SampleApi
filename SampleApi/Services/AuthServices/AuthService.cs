@@ -7,37 +7,48 @@ using System.Security.Claims;
 using System.Text;
 using SampleApi.DTOs.Auth;
 using SampleApi.Results;
+using Microsoft.AspNetCore.Identity;
+using SampleApi.Services.AuthServices;
 
 namespace SampleApi.Services.AuthServices;
 
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly IConfiguration _config;
 
-    public AuthService(IUserRepository userRepository,  IConfiguration config)
+    public AuthService(IUserRepository userRepository,  IConfiguration config, IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
         _config = config;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<ServiceResult<AuthResponseDTO>> Login(LoginDTO loginDTO)
+{
+    var user = await _userRepository.GetByEmail(loginDTO.Email);
+
+    if (user == null)
+        return ServiceResult<AuthResponseDTO>.Fail(["Invalid email or password"]);
+
+
+    var hashedPassword = this._passwordHasher.Hash(loginDTO.Password, user.Salt);
+
+    if (user.HashedPassword != hashedPassword)
+        return ServiceResult<AuthResponseDTO>.Fail(["Invalid email or password"]);
+
+    var token = this.GenerateJwtToken(user);
+
+    var response = new AuthResponseDTO
     {
-        var user = await _userRepository.GetByEmail(loginDTO.Email);
+        Token = token,
+        Email = user.Email
+    };
 
-        if (user == null || user.Password != loginDTO.Password)
-            return ServiceResult<AuthResponseDTO>.Fail(["Invalid email or password"]);
+    return ServiceResult<AuthResponseDTO>.Ok(response);
+}
 
-        var token = this.GenerateJwtToken(user);
-
-        var response = new AuthResponseDTO
-        {
-            Token = token,
-            Email = user.Email
-        };
-
-        return ServiceResult<AuthResponseDTO>.Ok(response);
-    }
 
     public string GenerateJwtToken(User user)
     {

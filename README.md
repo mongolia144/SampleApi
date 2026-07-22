@@ -1,4 +1,4 @@
-# SampleAPI — Modern .NET 10 REST API (No Swagger)  
+# SampleApi — Modern .NET 10 REST API (No Swagger)  
 
 A lightweight, modern, clean‑architecture Web API built with **.NET 10**, **ASP.NET Core**, **EF Core InMemory**, and **JWT Authentication**.
 Designed for clarity, testability, and minimal dependencies.
@@ -73,10 +73,10 @@ SampleApi/
 │   │      ├── MovieValidator.cs
 │   │      └── ValidationResult.cs
 │   ├───Program.cs
-│   ├───SampleAPI.csproj
+│   ├───SampleApi.csproj
 │   └───Properties/
 │          └── launchSettings.json
-└── SampleAPI.Test/
+└── SampleApi.Test/
 </pre>
 
 ---
@@ -246,6 +246,38 @@ Perfect for development and testing without external dependencies.
 
 ### JWT Authentication
 Secures protected endpoints using Bearer tokens.
+
+### 🔐 Password Security (Hashing + Salting)
+User credentials in this API are never stored in plaintext.
+Passwords are protected using a dedicated Password Hasher service that applies industry‑standard hashing and salting.
+
+How password storage works
+Each user receives a unique salt when their password is created.
+
+The plaintext password is combined with the salt.
+
+The combined value is hashed using a deterministic hashing algorithm.
+
+Only the salt and the hashed password are stored in the database.
+
+During login, the same hashing process is repeated and compared to the stored hash.
+
+Why this matters
+Plaintext passwords are never persisted or logged.
+
+Salting prevents rainbow‑table attacks.
+
+Hashing ensures passwords cannot be reversed.
+
+Even if the database is compromised, attackers cannot recover original passwords.
+
+Example stored fields
+<pre>
+Id: seed-user-1
+Email: test@example.com
+Salt: somesalt
+HashedPassword: ef92b778ba5c9c3a5e8f1a9e4f4e8e2b6d5c1f2a3b4c5d6e7f8a9b0c1d2e3f4
+</pre>
 
 ### Minimal Program.cs
 Focused, clean, and free of Swagger/OpenAPI dependencies.

@@ -2,11 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using SampleApi.Data;
 using SampleApi.Services.MovieServices;
 using SampleApi.Interfaces.MovieInterfaces;
-using SampleAPI.Validators;
+using SampleApi.Validators;
 using SampleApi.Interfaces.AuthInterfaces;
 using SampleApi.Services.AuthServices;
 using SampleApi.Interfaces.UserInterfaces;
 using SampleApi.Repositories;
+
 //using Microsoft.OpenApi.Models;
 
 
@@ -31,9 +32,8 @@ builder.Services.AddScoped<IMovieValidator, MovieValidator>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
-//User Repositiory
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //Register AuthService
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -85,17 +85,33 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    Console.WriteLine("Startup DbContext hash: " + db.GetHashCode());
+}
+
+
 // Test if user exist : uncomment this line to verify if you cannot login
-//using (var scope = app.Services.CreateScope())
-//{
-//    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-//
-//    db.Database.EnsureDeleted();   // optional, but useful while debugging
-//    db.Database.EnsureCreated();   // this is what triggers HasData
-//
-//    var users = db.Users.ToList();
-//    Console.WriteLine($"Seeded users: {users.Count}");
-//}
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    db.Database.EnsureDeleted();   // optional, but useful while debugging
+    db.Database.EnsureCreated();   // this is what triggers HasData
+
+    var users = db.Users.ToList();
+    Console.WriteLine($"Seeded users: {users.Count}");
+    foreach (var user in users)
+    {
+        Console.WriteLine("---- USER ----");
+        Console.WriteLine("Id: " + user.Id);
+        Console.WriteLine("Email: " + user.Email);
+        Console.WriteLine("Salt: " + user.Salt);
+        Console.WriteLine("HashedPassword: " + user.HashedPassword);
+    }
+
+}
 
 
 app.Run();
