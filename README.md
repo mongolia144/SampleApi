@@ -344,7 +344,9 @@ The CI workflow uploads the generated HTML coverage report as a Pages artifact, 
 ### 📊 View the Coverage Report
 The latest test coverage report is available online:
 
-👉 https://mongolia144.github.io/SampleApi/coverage-report/index.html
+👉 https://mongolia144.github.io/SampleApi/coverage-report/index.html 
+or here
+👉 https://mongolia144.github.io/SampleApi/
 
 
 
