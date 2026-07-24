@@ -327,6 +327,26 @@ The project includes a dedicated **Tests** folder containing unit tests for the 
 
 From the project root: dotnet test
 
+## Continuous Integration & Coverage Report
+
+This project includes a complete CI pipeline using GitHub Actions.  
+Every push triggers:
+
+- Automated build of the ASP.NET Core API  
+- Execution of all unit tests  
+- Generation of a Cobertura coverage file  
+- Conversion of the coverage file into a full HTML report  
+- Automatic publishing of the report using GitHub Pages
+
+GitHub Pages is configured to use **GitHub Actions** as the publishing source.  
+The CI workflow uploads the generated HTML coverage report as a Pages artifact, and GitHub Pages deploys it automatically.
+
+### 📊 View the Coverage Report
+The latest test coverage report is available online:
+
+👉 https://mongolia144.github.io/SampleApi/coverage-report/index.html
+
+
 
 ## 📈 Future Improvements
 
