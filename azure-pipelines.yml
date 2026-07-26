@@ -43,10 +43,11 @@ steps:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
     reportDirectory: '$(Agent.TempDirectory)'
-- task: AzureWebApp@1
+- task: AzureRmWebAppDeployment@4
   inputs:
     azureSubscription: 'Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)'
     appName: 'SampleAPIAzureDevOps'
-    package: '$(build.artifactStagingDirectory)/**/*.zip'
+    package: '$(build.artifactStagingDirectory)/SampleApi.zip'
+
 
 
