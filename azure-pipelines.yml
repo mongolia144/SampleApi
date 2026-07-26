@@ -1,8 +1,3 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
 trigger:
 - main
 
@@ -21,33 +16,41 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+# Build WITHOUT packaging
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    msbuildArgs: '/p:DeployOnBuild=false'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+# Test + coverage
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-    #Using Coverlet: gives better results. Remeber to add <PackageReference Include="coverlet.collector" Version="3.2.0" /> this into the .csproj
     testRunTitle: 'Run Tests with Coverage'
     diagnosticsEnabled: true
     collectCoverage: true
-    #Using coverage
     codeCoverageEnabled: true
+
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
     reportDirectory: '$(Agent.TempDirectory)'
+
+# Proper ASP.NET Core publish (creates web.config)
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--configuration Release --output $(build.artifactStagingDirectory)'
+    zipAfterPublish: true
+
+# Deploy the published ZIP
 - task: AzureRmWebAppDeployment@4
   inputs:
     azureSubscription: 'Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)'
     WebAppName: 'SampleAPIAzureDevOps'
-    package: '$(build.artifactStagingDirectory)/SampleApi.zip'
-
-
-
+    package: '$(build.artifactStagingDirectory)/**/*.zip'
