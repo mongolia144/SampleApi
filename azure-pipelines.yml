@@ -35,8 +35,9 @@ steps:
     #Using Coverlet: gives better results. Remeber to add <PackageReference Include="coverlet.collector" Version="3.2.0" /> this into the .csproj
     testRunTitle: 'Run Tests with Coverage'
     diagnosticsEnabled: true
+    collectCoverage: true
     #Using coverage
-    #codeCoverageEnabled: true
+    codeCoverageEnabled: true
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
