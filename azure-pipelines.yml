@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'windows-latest'   # still OK for building .NET
 
 variables:
   solution: '**/*.sln'
@@ -10,37 +10,38 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+# Install NuGet
 - task: NuGetToolInstaller@1
 
+# Restore packages
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
 
-# Build WITHOUT packaging
-- task: VSBuild@1
+# REMOVE VSBuild (Windows-only, produces WebDeploy artifacts)
+
+# Build using dotnet (Linux-compatible)
+- task: DotNetCoreCLI@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=false'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'build'
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration)'
 
 # Test + coverage
-- task: VSTest@2
+- task: DotNetCoreCLI@2
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-    testRunTitle: 'Run Tests with Coverage'
-    diagnosticsEnabled: true
-    collectCoverage: true
-    codeCoverageEnabled: true
+    command: 'test'
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration) --collect "XPlat Code Coverage"'
 
+# Publish coverage results
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
     reportDirectory: '$(Agent.TempDirectory)'
 
-# Proper ASP.NET Core publish (creates web.config)
+# Proper ASP.NET Core publish (Linux-ready)
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
@@ -48,9 +49,9 @@ steps:
     arguments: '--configuration Release --output $(build.artifactStagingDirectory)'
     zipAfterPublish: true
 
-# Deploy the published ZIP
-- task: AzureRmWebAppDeployment@4
+# Deploy to Linux App Service
+- task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)'
-    WebAppName: 'SampleAPIAzureDevOps'
+    appName: 'SampleApiAzureDevOpsLinux'
     package: '$(build.artifactStagingDirectory)/**/*.zip'
