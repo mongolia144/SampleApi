@@ -32,7 +32,11 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-    codeCoverageEnabled: true
+    #Using Coverlet: gives better results. Remeber to add <PackageReference Include="coverlet.collector" Version="3.2.0" /> this into the .csproj
+    testRunTitle: 'Run Tests with Coverage'
+    diagnosticsEnabled: true
+    #Using coverage
+    #codeCoverageEnabled: true
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
