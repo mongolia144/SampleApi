@@ -45,7 +45,7 @@ steps:
     reportDirectory: '$(Agent.TempDirectory)'
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: 'c13b401c-dde4-4298-ad6c-3ef836f847d5'
+    azureSubscription: 'Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)'
     appName: 'SampleAPIAzureDevOps'
     package: '$(build.artifactStagingDirectory)/**/*.zip'
 
