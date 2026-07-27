@@ -112,7 +112,7 @@ steps:
 - task: AzureCLI@2
   displayName: Deploy to Azure Container Apps
   inputs:
-    azureSubscription: c13b401c-dde4-4298-ad6c-3ef836f847d5
+    azureSubscription: Azure subscription 1
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
