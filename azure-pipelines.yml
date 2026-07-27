@@ -68,61 +68,56 @@ steps:
     arguments: '--configuration Release --output $(build.artifactStagingDirectory)'
     zipAfterPublish: true
 
-# ---------------------------------------------------------
-# Build Docker image for GHCR (Linux agent required)
-# ---------------------------------------------------------
-- task: Docker@2
-  displayName: Build Docker image
-  inputs:
-    command: build
-    Dockerfile: SampleApi/Dockerfile
-    tags: |
-      ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
+# =====================================================================
+# EVERYTHING BELOW THIS LINE IS COMMENTED OUT (DEPLOYMENT DISABLED)
+# =====================================================================
 
 # ---------------------------------------------------------
-# Login to GHCR (using GHCR_PAT secret)
+# Build Docker image for GHCR (DISABLED)
 # ---------------------------------------------------------
-- script: |
-    echo $(GHCR_PAT) | docker login ghcr.io -u mongolia144 --password-stdin
-  displayName: Login to GHCR
-
-# ---------------------------------------------------------
-# Push Docker image to GHCR
-# ---------------------------------------------------------
-- task: Docker@2
-  displayName: Push Docker image
-  inputs:
-    command: push
-    tags: |
-      ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
+# - task: Docker@2
+#   displayName: Build Docker image
+#   inputs:
+#     command: build
+#     Dockerfile: SampleApi/Dockerfile
+#     tags: |
+#       ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
 
 # ---------------------------------------------------------
-# Deploy container to Azure Container Apps (ACA)
+# Login to GHCR (DISABLED)
 # ---------------------------------------------------------
-- task: AzureCLI@2
-  displayName: Deploy to Azure Container Apps
-  inputs:
+# - script: |
+#     echo $(GHCR_PAT) | docker login ghcr.io -u mongolia144 --password-stdin
+#   displayName: Login to GHCR
 
-    # IMPORTANT:
-    # This value MUST match the EXACT service connection name shown in:
-    # Azure DevOps → Project → Project Settings → Service connections
-    #
-    # In your case, the correct name is:
-    # Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)
+# ---------------------------------------------------------
+# Push Docker image to GHCR (DISABLED)
+# ---------------------------------------------------------
+# - task: Docker@2
+#   displayName: Push Docker image
+#   inputs:
+#     command: push
+#     tags: |
+#       ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
 
-    azureSubscription: Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)
-
-    scriptType: bash
-    scriptLocation: inlineScript
-    inlineScript: |
-      az containerapp registry set \
-        --name sampleapi \
-        --resource-group sampleApi_AzureDevOps_Acr_rg \
-        --server ghcr.io \
-        --username mongolia144 \
-        --password "$GHCR_PAT"
-
-      az containerapp update \
-        --name sampleapi \
-        --resource-group sampleApi_AzureDevOps_Acr_rg \
-        --image ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
+# ---------------------------------------------------------
+# Deploy container to Azure Container Apps (DISABLED)
+# ---------------------------------------------------------
+# - task: AzureCLI@2
+#   displayName: Deploy to Azure Container Apps
+#   inputs:
+#     azureSubscription: Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)
+#     scriptType: bash
+#     scriptLocation: inlineScript
+#     inlineScript: |
+#       az containerapp registry set \
+#         --name sampleapi \
+#         --resource-group sampleApi_AzureDevOps_Acr_rg \
+#         --server ghcr.io \
+#         --username mongolia144 \
+#         --password "$GHCR_PAT"
+#
+#       az containerapp update \
+#         --name sampleapi \
+#         --resource-group sampleApi_AzureDevOps_Acr_rg \
+#         --image ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
