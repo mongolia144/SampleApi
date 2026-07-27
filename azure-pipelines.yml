@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'   
+  vmImage: 'ubuntu-latest'   # REQUIRED: Linux agent so Docker can build Linux containers
 
 variables:
   solution: '**/*.sln'
@@ -10,64 +10,83 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-# Install NuGet
-- task: NuGetToolInstaller@1
 
-# Restore packages
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+# ---------------------------------------------------------
+# ❌ REMOVED: NuGetToolInstaller + NuGetCommand
+# These require Windows + Mono and FAIL on Linux.
+# ---------------------------------------------------------
 
-# Build using dotnet (Linux-compatible)
+# ---------------------------------------------------------
+# ⭐ Restore using dotnet (Linux-compatible)
+# ---------------------------------------------------------
 - task: DotNetCoreCLI@2
+  displayName: Restore packages
+  inputs:
+    command: 'restore'
+    projects: '$(solution)'
+
+# ---------------------------------------------------------
+# Build using dotnet (Linux-compatible)
+# ---------------------------------------------------------
+- task: DotNetCoreCLI@2
+  displayName: Build solution
   inputs:
     command: 'build'
     projects: '$(solution)'
     arguments: '--configuration $(buildConfiguration)'
 
+# ---------------------------------------------------------
 # Test + coverage
+# ---------------------------------------------------------
 - task: DotNetCoreCLI@2
+  displayName: Run tests
   inputs:
     command: 'test'
     projects: '$(solution)'
     arguments: '--configuration $(buildConfiguration) --collect "XPlat Code Coverage"'
 
+# ---------------------------------------------------------
 # Publish coverage results
+# ---------------------------------------------------------
 - task: PublishCodeCoverageResults@1
+  displayName: Publish coverage
   inputs:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
     reportDirectory: '$(Agent.TempDirectory)'
 
-# Proper ASP.NET Core publish (Linux-ready)
+# ---------------------------------------------------------
+# Publish ASP.NET Core app (Linux-ready)
+# ---------------------------------------------------------
 - task: DotNetCoreCLI@2
+  displayName: Publish app
   inputs:
     command: 'publish'
     publishWebProjects: true
     arguments: '--configuration Release --output $(build.artifactStagingDirectory)'
     zipAfterPublish: true
 
-# -------------------------------
-# ⭐ NEW: Build Docker image for GHCR
-# -------------------------------
+# ---------------------------------------------------------
+# ⭐ Build Docker image for GHCR (Linux agent required)
+# ---------------------------------------------------------
 - task: Docker@2
   displayName: Build Docker image
   inputs:
     command: build
-    Dockerfile: SampleApi/Dockerfile   # adjust if your Dockerfile is elsewhere
+    Dockerfile: SampleApi/Dockerfile
     tags: |
       ghcr.io/<your-github-username>/sampleapi:$(Build.BuildId)
 
-# -------------------------------
-# ⭐ NEW: Login to GHCR (using GHCR_PAT secret)
-# -------------------------------
+# ---------------------------------------------------------
+# ⭐ Login to GHCR (using GHCR_PAT secret)
+# ---------------------------------------------------------
 - script: |
     echo $(GHCR_PAT) | docker login ghcr.io -u <your-github-username> --password-stdin
   displayName: Login to GHCR
 
-# -------------------------------
-# ⭐ NEW: Push Docker image to GHCR
-# -------------------------------
+# ---------------------------------------------------------
+# ⭐ Push Docker image to GHCR
+# ---------------------------------------------------------
 - task: Docker@2
   displayName: Push Docker image
   inputs:
@@ -75,25 +94,19 @@ steps:
     tags: |
       ghcr.io/<your-github-username>/sampleapi:$(Build.BuildId)
 
-# -------------------------------
-# ❌ REMOVE THIS: Deploy to Linux App Service
-# This is for ZIP deployments, not containers.
-# ACA will replace this step.
-# -------------------------------
-# - task: AzureWebApp@1
-#   inputs:
-#     azureSubscription: 'Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)'
-#     appName: 'SampleApiAzureDevOpsLinux'
-#     package: '$(build.artifactStagingDirectory)/**/*.zip'
+# ---------------------------------------------------------
+# ❌ REMOVED: AzureWebApp ZIP deployment
+# Not used anymore. ACA uses containers.
+# ---------------------------------------------------------
 
-# -------------------------------
-# ⭐ NEW: Deploy container to Azure Container Apps (ACA)
-# -------------------------------
+# ---------------------------------------------------------
+# ⭐ Deploy container to Azure Container Apps (ACA)
+# ---------------------------------------------------------
 - script: |
     az containerapp update \
       --name sampleapi \
       --resource-group sampleApi_AzureDevOps_Acr_rg \
-      --image ghcr.io/mongolia144/sampleapi:$(Build.BuildId) \
+      --image ghcr.io/<your-github-username>/sampleapi:$(Build.BuildId) \
       --registry-server ghcr.io \
       --registry-username <your-github-username> \
       --registry-password $(GHCR_PAT)
