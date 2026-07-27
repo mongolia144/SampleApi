@@ -110,11 +110,16 @@ steps:
 # ⭐ Deploy container to Azure Container Apps (ACA)
 # ---------------------------------------------------------
 - script: |
+    az containerapp registry set \
+      --name sampleapi \
+      --resource-group sampleApi_AzureDevOps_Acr_rg \
+      --server ghcr.io \
+      --username mongolia144 \
+      --password "$GHCR_PAT"
+
     az containerapp update \
       --name sampleapi \
       --resource-group sampleApi_AzureDevOps_Acr_rg \
-      --image ghcr.io/mongolia144/sampleapi:$(Build.BuildId) \
-      --registry-server ghcr.io \
-      --registry-username mongolia144 \
-      --registry-password $(GHCR_PAT)
+      --image ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
   displayName: Deploy to Azure Container Apps
+
