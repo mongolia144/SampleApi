@@ -5,9 +5,12 @@ pool:
   vmImage: 'ubuntu-latest'   # REQUIRED: Linux agent so Docker can build Linux containers
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+- group: New variable group 27-Jul
+
+solution: '**/*.sln'
+buildPlatform: 'Any CPU'
+buildConfiguration: 'Release'
+
 
 steps:
 
