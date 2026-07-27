@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ptBA/TubM3I=",
+  "dgSpecHash": "+Tx3obPzThU=",
   "success": true,
   "projectFilePath": "C:\\Users\\mark_\\source\\repos\\SampleApi_AzureDevOps\\SampleApi.Test\\SampleApi.Test.csproj",
   "expectedPackageFiles": [
@@ -31,6 +31,7 @@
     "C:\\Users\\mark_\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\mark_\\.nuget\\packages\\microsoft.testplatform.objectmodel\\17.8.0\\microsoft.testplatform.objectmodel.17.8.0.nupkg.sha512",
     "C:\\Users\\mark_\\.nuget\\packages\\microsoft.testplatform.testhost\\17.8.0\\microsoft.testplatform.testhost.17.8.0.nupkg.sha512",
+    "C:\\Users\\mark_\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.23.0\\microsoft.visualstudio.azure.containers.tools.targets.1.23.0.nupkg.sha512",
     "C:\\Users\\mark_\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\mark_\\.nuget\\packages\\moq\\4.20.72\\moq.4.20.72.nupkg.sha512",
     "C:\\Users\\mark_\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
