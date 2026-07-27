@@ -81,7 +81,7 @@ steps:
 # ⭐ Login to GHCR (using GHCR_PAT secret)
 # ---------------------------------------------------------
 - script: |
-    echo $(GHCR_PAT) | docker login ghcr.io -u <your-github-username> --password-stdin
+    echo $(GHCR_PAT) | docker login ghcr.io -u mongolia144 --password-stdin
   displayName: Login to GHCR
 
 # ---------------------------------------------------------
