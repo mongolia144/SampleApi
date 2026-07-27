@@ -109,17 +109,23 @@ steps:
 # ---------------------------------------------------------
 # ⭐ Deploy container to Azure Container Apps (ACA)
 # ---------------------------------------------------------
-- script: |
-    az containerapp registry set \
-      --name sampleapi \
-      --resource-group sampleApi_AzureDevOps_Acr_rg \
-      --server ghcr.io \
-      --username mongolia144 \
-      --password "$GHCR_PAT"
-
-    az containerapp update \
-      --name sampleapi \
-      --resource-group sampleApi_AzureDevOps_Acr_rg \
-      --image ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
+- task: AzureCLI@2
   displayName: Deploy to Azure Container Apps
+  inputs:
+    azureSubscription: c13b401c-dde4-4298-ad6c-3ef836f847d5
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      az containerapp registry set \
+        --name sampleapi \
+        --resource-group sampleApi_AzureDevOps_Acr_rg \
+        --server ghcr.io \
+        --username mongolia144 \
+        --password "$GHCR_PAT"
+
+      az containerapp update \
+        --name sampleapi \
+        --resource-group sampleApi_AzureDevOps_Acr_rg \
+        --image ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
+
 
