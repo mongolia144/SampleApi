@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-latest'   # REQUIRED: Linux agent so Docker can build Linux containers
 
 variables:
 - group: New variable group 27-Jul
@@ -19,7 +19,7 @@ variables:
 steps:
 
 # ---------------------------------------------------------
-# Restore
+# Restore using dotnet (Linux-compatible)
 # ---------------------------------------------------------
 - task: DotNetCoreCLI@2
   displayName: Restore packages
@@ -28,7 +28,7 @@ steps:
     projects: '$(solution)'
 
 # ---------------------------------------------------------
-# Build
+# Build using dotnet (Linux-compatible)
 # ---------------------------------------------------------
 - task: DotNetCoreCLI@2
   displayName: Build solution
@@ -48,7 +48,7 @@ steps:
     arguments: '--configuration $(buildConfiguration) --collect "XPlat Code Coverage"'
 
 # ---------------------------------------------------------
-# Publish coverage
+# Publish coverage results
 # ---------------------------------------------------------
 - task: PublishCodeCoverageResults@1
   displayName: Publish coverage
@@ -58,7 +58,7 @@ steps:
     reportDirectory: '$(Agent.TempDirectory)'
 
 # ---------------------------------------------------------
-# Publish app
+# Publish ASP.NET Core app (Linux-ready)
 # ---------------------------------------------------------
 - task: DotNetCoreCLI@2
   displayName: Publish app
@@ -69,7 +69,7 @@ steps:
     zipAfterPublish: true
 
 # ---------------------------------------------------------
-# Build Docker image
+# Build Docker image for GHCR (Linux agent required)
 # ---------------------------------------------------------
 - task: Docker@2
   displayName: Build Docker image
@@ -80,14 +80,14 @@ steps:
       ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
 
 # ---------------------------------------------------------
-# Login to GHCR
+# Login to GHCR (using GHCR_PAT secret)
 # ---------------------------------------------------------
 - script: |
     echo $(GHCR_PAT) | docker login ghcr.io -u mongolia144 --password-stdin
   displayName: Login to GHCR
 
 # ---------------------------------------------------------
-# Push Docker image
+# Push Docker image to GHCR
 # ---------------------------------------------------------
 - task: Docker@2
   displayName: Push Docker image
@@ -97,15 +97,32 @@ steps:
       ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
 
 # ---------------------------------------------------------
-# ⭐ Deploy to Azure Container Apps (recommended method)
+# Deploy container to Azure Container Apps (ACA)
 # ---------------------------------------------------------
-- task: AzureContainerAppsDeploy@1
+- task: AzureCLI@2
   displayName: Deploy to Azure Container Apps
   inputs:
-    azureSubscription: Azure subscription 1
-    resourceGroup: sampleApi_AzureDevOps_Acr_rg
-    containerAppName: sampleapi
-    imageToDeploy: ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
-    containerRegistryServer: ghcr.io
-    containerRegistryUsername: mongolia144
-    containerRegistryPassword: $(GHCR_PAT)
+
+    # IMPORTANT:
+    # This value MUST match the EXACT service connection name shown in:
+    # Azure DevOps → Project → Project Settings → Service connections
+    #
+    # In your case, the correct name is:
+    # Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)
+
+    azureSubscription: Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)
+
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      az containerapp registry set \
+        --name sampleapi \
+        --resource-group sampleApi_AzureDevOps_Acr_rg \
+        --server ghcr.io \
+        --username mongolia144 \
+        --password "$GHCR_PAT"
+
+      az containerapp update \
+        --name sampleapi \
+        --resource-group sampleApi_AzureDevOps_Acr_rg \
+        --image ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
