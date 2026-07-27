@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'   # still OK for building .NET
+  vmImage: 'ubuntu-latest'   
 
 variables:
   solution: '**/*.sln'
