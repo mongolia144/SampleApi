@@ -12,6 +12,7 @@ buildPlatform: 'Any CPU'
 buildConfiguration: 'Release'
 
 
+
 steps:
 
 # ---------------------------------------------------------
