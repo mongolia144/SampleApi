@@ -75,7 +75,7 @@ steps:
     command: build
     Dockerfile: SampleApi/Dockerfile
     tags: |
-      ghcr.io/<your-github-username>/sampleapi:$(Build.BuildId)
+      ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
 
 # ---------------------------------------------------------
 # ⭐ Login to GHCR (using GHCR_PAT secret)
@@ -92,7 +92,7 @@ steps:
   inputs:
     command: push
     tags: |
-      ghcr.io/<your-github-username>/sampleapi:$(Build.BuildId)
+      ghcr.io/mongolia144/sampleapi:$(Build.BuildId)
 
 # ---------------------------------------------------------
 # ❌ REMOVED: AzureWebApp ZIP deployment
@@ -106,8 +106,8 @@ steps:
     az containerapp update \
       --name sampleapi \
       --resource-group sampleApi_AzureDevOps_Acr_rg \
-      --image ghcr.io/<your-github-username>/sampleapi:$(Build.BuildId) \
+      --image ghcr.io/mongolia144/sampleapi:$(Build.BuildId) \
       --registry-server ghcr.io \
-      --registry-username <your-github-username> \
+      --registry-username mongolia144 \
       --registry-password $(GHCR_PAT)
   displayName: Deploy to Azure Container Apps
