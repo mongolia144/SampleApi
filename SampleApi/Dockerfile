@@ -1,14 +1,15 @@
+# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy csproj and restore
-COPY ./SampleApi/SampleApi/*.csproj .
-RUN dotnet restore
+# Copy entire repo
+COPY . .
 
-# Copy the full project and publish
-COPY ./SampleApi/SampleApi/. .
-RUN dotnet publish -c Release -o /app
+# Restore and publish the API project explicitly
+RUN dotnet restore SampleApi/SampleApi.csproj
+RUN dotnet publish SampleApi/SampleApi.csproj -c Release -o /app
 
+# Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app .
