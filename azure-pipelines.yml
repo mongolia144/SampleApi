@@ -65,8 +65,10 @@ steps:
   inputs:
     command: build
     Dockerfile: SampleApi/Dockerfile
+    repository: sampleapiregistry.azurecr.io/sampleapi
     tags: |
-      sampleapiregistry.azurecr.io/sampleapi:latest
+      latest
+
 
 # ---------------------------------------------------------
 # Login to ACR
