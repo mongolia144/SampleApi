@@ -1,10 +1,7 @@
-# SampleApi — Modern .NET 8 REST API (No Swagger)  
+# SampleApi — Modern .NET 8 REST API (No Swagger)
 
-A lightweight, modern, clean‑architecture Web API built with **.NET 8**, **ASP.NET Core**, **Azure SQL**, **EF Core**, and **JWT Authentication**. Designed for clarity, testability, and cloud‑ready deployment using **Docker**, **Azure Container Apps**, **Azure DevOps CI/CD**, and **secure secret management**.
-
-
-A lightweight, modern, clean‑architecture Web API built with **.NET 8**, **ASP.NET Core**, **EF Core InMemory**, and **JWT Authentication**.
-Designed for clarity, testability, and minimal dependencies.
+A lightweight, modern, clean‑architecture Web API built with **.NET 8**, **ASP.NET Core**, **Azure SQL**, **EF Core**, and **JWT Authentication**.  
+Designed for clarity, testability, and cloud‑ready deployment using **Docker**, **Azure Container Apps**, **Azure DevOps CI/CD**, and **secure secret management**.
 
 ---
 
@@ -40,52 +37,87 @@ Designed for clarity, testability, and minimal dependencies.
 
 ---
 
+## 🧱 Architecture Overview
+
+### Repository Pattern  
+Encapsulates persistence logic and keeps data access testable.
+
+### Service Layer  
+Contains business logic and orchestrates operations between repositories, validators, and DTOs.
+
+### DTOs  
+Prevent domain models from leaking to API consumers.
+
+### Validation Layer  
+Ensures business rules are consistently enforced.
+
+### ServiceResult Pattern  
+Provides standardized responses:  
+- Success  
+- Data  
+- Errors  
+
+### JWT Authentication  
+Secures protected endpoints using Bearer tokens.
+
+### Password Hashing + Salting  
+Passwords are never stored in plaintext.  
+Each user receives a unique salt, and the hashed password is stored securely.
+
+Example stored fields:
+Id: seed-user-1
+Email: test@example.com
+Salt: somesalt
+HashedPassword: ef92b778ba5c9c3a5e8f1a9e4f4e8e2b6d5c1f2a3b4c5d6e7f8a9b0c1d2e3f4
+
+
+---
+
 ## 📁 Project Structure
 
 <pre>
 SampleApi/
 ├── SampleApi/
-│   ├──Controllers/
+│   ├── Controllers/
 │   │     ├── AuthController.cs
 │   │     └── MoviesController.cs
 │   ├── Data/
 │   │     └── AppDbContext.cs
-├   ├── DTO/
+│   ├── DTO/
 │   │     ├── Auth/
 │   │     │   ├── AuthResponseDTO.cs
 │   │     ├── LoginDTO.cs
 │   │     ├── MovieDTOAdd.cs
-│   │     ├── MovieDTOAdd.cs
 │   │     ├── MovieDTORead.cs
 │   │     └── MovieDTOUpdate.cs
-│   ├───Interfaces/
-│   │      ├──IAuthService.cs
-│   │      ├──IMovieRepositiory.cs
-│   │      ├──IMovieService.cs
-│   │      ├──IMovieValidator.cs
-│   │      └──IUserRepository.cs
-│   │      └──IPasswordHasher.cs
-│   ├───Mappings/
-│   │      └── MovieMaping.cs
-│   ├───Models/
+│   ├── Interfaces/
+│   │      ├── IAuthService.cs
+│   │      ├── IMovieRepository.cs
+│   │      ├── IMovieService.cs
+│   │      ├── IMovieValidator.cs
+│   │      ├── IUserRepository.cs
+│   │      └── IPasswordHasher.cs
+│   ├── Mappings/
+│   │      └── MovieMapping.cs
+│   ├── Models/
 │   │      ├── Movie.cs
 │   │      └── User.cs
-│   ├───Repositories/
+│   ├── Repositories/
 │   │      ├── MovieRepository.cs
 │   │      └── UserRepository.cs
-│   ├───Results/
+│   ├── Results/
 │   │      └── ServiceResults.cs
-│   ├───Services/
+│   ├── Services/
 │   │      ├── AuthServices/
-│   │      │   ├─── AuthService.cs
-│   │      │   ├─── PasswordHasher.cs
+│   │      │   ├── AuthService.cs
+│   │      │   ├── PasswordHasher.cs
 │   │      └── MovieService.cs
-│   ├───Validators/
+│   ├── Validators/
 │   │      ├── MovieValidator.cs
 │   │      └── ValidationResult.cs
-│   ├───Program.cs
-│   ├───SampleApi.csproj
-│   └───Properties/
+│   ├── Program.cs
+│   ├── SampleApi.csproj
+│   └── Properties/
 │          └── launchSettings.json
 └── SampleApi.Test/
 </pre>
@@ -94,17 +126,21 @@ SampleApi/
 
 ## 🚀 Running the Project
 
-### 1. Restore packages
+### 1. Restore packages  
+
 dotnet restore
 
-### 2. Run the API
+
+### 2. Run the API  
+
 dotnet run
 
-### 3. API Base URL
 
-Check the console output for the port, then open:
+### 3. API Base URL  
+Check the console output for the port, then open:  
 
 http://localhost:<port>
+
 
 ---
 
@@ -112,243 +148,117 @@ http://localhost:<port>
 
 Swagger has been removed, so authentication is performed using Postman or similar tools.
 
-## 🔐 Register the JWT Signing Key (Required)
-Before running the API, you must configure the JWT signing key using .NET User Secrets.
-This keeps sensitive values out of source control and ensures each developer can use their own local key.
+### Register the JWT Signing Key (Required)
 
-### 🗝️ 1. Navigate to the project folder
-Run this from the terminal, pointing to the folder containing your .csproj file:
+#### 1. Navigate to the project folder  
 
-<pre>
-cd YourProject.Api
-</pre>
-Ex:
-<pre>
 cd SampleApi
-</pre>
 
-### 🗝️ 2. Initialize User Secrets (only needed once)
-<pre>
+
+#### 2. Initialize User Secrets  
+
 dotnet user-secrets init
-</pre>
-This links a secure local secrets store to your project.
 
-### 🗝️ 3. Add the JWT signing key
-<pre>
+
+#### 3. Add the JWT signing key  
+
 dotnet user-secrets set "Jwt:Key" "your-super-secret-key-here"
-</pre>
-Use any long random string. Example:
 
-<pre>
-dotnet user-secrets set "Jwt:Key" "A9F3C1D8-SECRET-KEY-XYZ-2026"
-</pre>
-### 🗝️ 4. (Optional) Add issuer and audience
-<pre>
+
+#### 4. (Optional) Add issuer and audience  
+
 dotnet user-secrets set "Jwt:Issuer" "YourApi"
 dotnet user-secrets set "Jwt:Audience" "YourApiClient"
-</pre>
-### 🗝️ 5. Verify the stored secrets
-<pre>
+
+
+#### 5. Verify stored secrets  
+
 dotnet user-secrets list
-</pre>
-Expected output:
 
-Code
-Jwt:Key = your-super-secret-key-here
-Jwt:Issuer = YourApi
-Jwt:Audience = YourApiClient
-### 🔧 How the API reads these values
-Your Program.cs should contain:
 
-<pre>
+### How the API reads these values  
+
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = jwtSettings.GetValue<string>("Key")
-    ?? throw new Exception("JWT Key is missing in configuration");
+?? throw new Exception("JWT Key is missing in configuration");
 
-var issuer = jwtSettings.GetValue<string>("Issuer")
-    ?? throw new Exception("JWT Issuer is missing in configuration");
 
-var audience = jwtSettings.GetValue<string>("Audience")
-    ?? throw new Exception("JWT Audience is missing in configuration");
-</pre> 
-
-These values come from User Secrets, not from appsettings.json.
-
-### 1. Login to obtain a JWT token
-
-POST: http://localhost:5138/auth/login
-- Body (JSON):
-{
-  "Email": "test@example.com",
-  "Password": "password123"
-}
-- Response: 
-{
-  "token": "<your JWT token>"
-}
-
-### 2. 🔑 Using the JWT Token in Postman
-
-Add this header to any protected request:
-Authorization: Bearer <your token>
-No quotes around the token.
+---
 
 ## 🎬 Movies API Endpoints
+
 All movie endpoints require a valid JWT token.
 
-### 1. ➕ Create a Movie
+### ➕ Create a Movie  
+POST `/api/movies`  
+Headers:  
+- Authorization: Bearer <token>  
+- Content-Type: application/json  
 
-- POST: http://localhost:5138/api/movies
-- Headers:
-Authorization: Bearer <token>
-Content-Type: application/json
-- Body:
-{
-  "title": "Inception",
-  "year": 2010
-}
+### 📄 Get All Movies  
+GET `/api/movies`
 
-### 2. 📄 Get All Movies
-GET: http://localhost:5138/api/movies
+### 🔍 Get Movie by ID  
+GET `/api/movies/{id}`
 
-### 3. 🔍 Get Movie by ID
-GET: http://localhost:5138/api/movies/{id}
+### ✏️ Update Movie  
+PUT `/api/movies/{id}`  
+Headers:  
+- Authorization: Bearer <token>  
+- Content-Type: application/json  
 
-### 4. ✏️ Update Movie
-PUT: http://localhost:5138/api/movies/{id}
-- Headers:
-Authorization: Bearer <token>
-Content-Type: application/json
-- Body:
-{
-  "title": "Matrix",
-  "year": 1999
-}
+### ❌ Delete Movie  
+DELETE `/api/movies/{id}`  
+Headers:  
+- Authorization: Bearer <token>
 
-### ❌ Delete Movie
-http://localhost:5138/api/movies/{id}
-- Headers:
-Authorization: Bearer <token>
-Content-Type: application/json
-
-## Architecture Overview
-
-
-### Repository Pattern
-Keeps persistence logic isolated and testable.
-
-### Service Layer
-Encapsulates business logic and orchestrates operations.
-
-### DTOs
-Prevent leaking domain models to API consumers.
-
-### Validation Layer
-Ensures business rules are enforced consistently.
-
-### ServiceResult Pattern
-Standardizes service responses:
-Success
-Data
-Errors
-
-### JWT Authentication
-Secures protected endpoints using Bearer tokens.
-
-### 🔐 Password Security (Hashing + Salting)
-User credentials in this API are never stored in plaintext.
-Passwords are protected using a dedicated Password Hasher service that applies industry‑standard hashing and salting.
-
-How password storage works
-Each user receives a unique salt when their password is created.
-
-The plaintext password is combined with the salt.
-
-The combined value is hashed using a deterministic hashing algorithm.
-
-Only the salt and the hashed password are stored in the database.
-
-During login, the same hashing process is repeated and compared to the stored hash.
-
-Why this matters
-Plaintext passwords are never persisted or logged.
-
-Salting prevents rainbow‑table attacks.
-
-Hashing ensures passwords cannot be reversed.
-
-Even if the database is compromised, attackers cannot recover original passwords.
-
-Example stored fields
-<pre>
-Id: seed-user-1
-Email: test@example.com
-Salt: somesalt
-HashedPassword: ef92b778ba5c9c3a5e8f1a9e4f4e8e2b6d5c1f2a3b4c5d6e7f8a9b0c1d2e3f4
-</pre>
+---
 
 ## 🗄️ Azure SQL Database Integration
 
 This project uses an **Azure SQL Database** as the production data store.  
-The connection string is **not stored in the code** — it is securely managed in **Azure Container Apps** as a secret.
+The connection string is stored securely in **Azure Container Apps** as a secret.
 
-### Connection String Secret
-In Azure Container Apps, the SQL connection string is stored under the secret name:
+### Connection String Secret  
+Secret name:
 
 defaultconnectionstring
 
-It is injected into the application using an environment variable:
+Injected via environment variable:
 
 ConnectionStrings__sampleApi = secretref:defaultconnectionstring
 
 
-EF Core automatically reads this value through the standard `ConnectionStrings` configuration pattern, enabling secure and cloud‑ready database access.
+EF Core automatically reads this value through the standard `ConnectionStrings` configuration pattern.
 
-
-### Minimal Program.cs
-Focused, clean, and free of Swagger/OpenAPI dependencies.
+---
 
 ## 🧪 Tests
 
-The project includes a dedicated **Tests** folder containing unit tests for the `MovieService`.
+Unit tests are located in the `SampleApi.Test` project.
 
 ### ✔ What is tested
 
-- **GetAll**
-  - Returns mapped DTOs
-  - Returns empty list
-
-- **GetById**
-  - Returns DTO when found
-  - Returns null when not found
-
-- **Add**
-  - Success path
-  - Validation failure
-  - Mapping correctness (DTOAdd → Entity → DTORead)
-
-- **Update**
-  - Success path
-  - Entity not found
-  - Validation failure
-  - Mapping correctness
-
+- **GetAll**  
+- **GetById**  
+- **Add**  
+- **Update**  
 - **Delete**
-  - Success path
-  - Entity not found
-  - Repository interaction correctness
 
 ### ✔ Tools & Patterns Used
 
-- **Moq** for mocking repository and validator dependencies  
-- **Callback capture** to verify mapping correctness  
-- **Arrange–Act–Assert** test structure  
-- **Repository interaction verification** (`Times.Once`, `Times.Never`)  
-- **ServiceResult<T>** success/error assertions  
+- **Moq** for mocking dependencies  
+- **Callback capture** for mapping verification  
+- **Arrange–Act–Assert** structure  
+- **Repository interaction verification**  
+- **ServiceResult<T>** assertions  
 
-### ✔ Running the Tests
+### ✔ Run the tests  
 
-From the project root: dotnet test
+dotnet test
+
+
+---
 
 ## 🔄 Azure DevOps CI/CD Pipeline
 
@@ -356,59 +266,25 @@ This project includes a full **Azure DevOps CI/CD pipeline** that builds, tests,
 
 ### Pipeline Workflow
 
-1. **Restore & Build**
-   - Restores NuGet packages
-   - Builds the .NET 8 solution
+1. Restore & Build  
+2. Run Unit Tests + Coverage  
+3. Docker Image Build  
+4. Push Image to ACR  
+5. Inject Secrets  
+6. Deploy to ACA (zero‑downtime rollout)
 
-2. **Run Unit Tests + Coverage**
-   - Executes all tests in `SampleApi.Test`
-   - Generates code coverage reports
+### Coverage Report  
+A coverage report is generated in Azure:  
+https://mongolia144.github.io/SampleApi/coverage-report/index.html
 
-3. **Docker Image Build**
-   - Builds the API Docker image using the project’s Dockerfile
-
-4. **Push Image to Azure Container Registry (ACR)**
-   - Authenticates using Azure DevOps service connection
-   - Pushes the built image to your ACR instance
-
-5. **Inject Secrets**
-   - The Azure SQL connection string is stored in Azure as a **secret**
-   - The pipeline does **not** expose it in logs or YAML
-   - ACA reads it via:
-     ```
-     ConnectionStrings__sampleApi = secretref:defaultconnectionstring
-     ```
-
-6. **Deploy to Azure Container Apps**
-   - Creates a new ACA revision
-   - Applies environment variables
-   - Uses the latest image from ACR
-   - Ensures zero‑downtime rollout
-
-### Why This Matters
-
-This CI/CD setup mirrors real enterprise workflows:
-- No manual deployments  
-- No secrets in code  
-- Automatic versioning  
-- Cloud‑ready, production‑style pipeline  
-
-
-### 📊 View the Coverage Report
-A coverage report is generated in Azure similar to this one:
-
-👉 https://mongolia144.github.io/SampleApi/coverage-report/index.html 
-or here
-👉 https://mongolia144.github.io/SampleApi/
-
-
+---
 
 ## 📈 Future Improvements
 
-- Add role‑based authorization
-- Add registration
-- Add unit tests ( task ongoing).
-- Add API versioning
+- Add role‑based authorization  
+- Add registration  
+- Expand unit tests  
+- Add API versioning  
 
 ---
 
