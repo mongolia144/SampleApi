@@ -116,10 +116,10 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
       echo "Binding secret to env var ConnectionStrings__sampleApi..."
-      az containerapp envvar set \
+      az containerapp update \
         --name sampleapi \
         --resource-group sampleApi_AzureDevOps_Acr_rg \
-        --env-vars "ConnectionStrings__sampleApi=secretref:defaultconnectionstring"
+        --set-env-vars "ConnectionStrings__sampleApi=secretref:defaultconnectionstring"
 
 # ---------------------------------------------------------
 # Deploy to Azure Container Apps (update revision)
