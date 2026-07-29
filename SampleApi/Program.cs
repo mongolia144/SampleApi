@@ -39,8 +39,27 @@ builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 // EF Core InMemory
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseInMemoryDatabase("SampleDb"));
+
+// EF Core SQL Azure
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("sampleApi")));
+
+// EF Core SQL Azure with retry in case that there are transient connection issues
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseInMemoryDatabase("SampleDb"));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("sampleApi"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: null
+        )
+    )
+);
+
+
+
 
 // Controllers
 builder.Services.AddControllers();
