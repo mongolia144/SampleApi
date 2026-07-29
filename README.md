@@ -1,33 +1,42 @@
-# SampleApi — Modern .NET 10 REST API (No Swagger)  
+# SampleApi — Modern .NET 8 REST API (No Swagger)  
 
-A lightweight, modern, clean‑architecture Web API built with **.NET 10**, **ASP.NET Core**, **EF Core InMemory**, and **JWT Authentication**.
+A lightweight, modern, clean‑architecture Web API built with **.NET 8**, **ASP.NET Core**, **Azure SQL**, **EF Core**, and **JWT Authentication**. Designed for clarity, testability, and cloud‑ready deployment using **Docker**, **Azure Container Apps**, **Azure DevOps CI/CD**, and **secure secret management**.
+
+
+A lightweight, modern, clean‑architecture Web API built with **.NET 8**, **ASP.NET Core**, **EF Core InMemory**, and **JWT Authentication**.
 Designed for clarity, testability, and minimal dependencies.
 
 ---
 
 ## ✨ Features
 
-- Modern **.NET 10** hosting model
+- Modern **.NET 8** hosting model (Minimal Hosting)
 - Clean **RESTful** controller structure
 - **JWT Authentication** with Bearer tokens
-- **EF Core InMemory** database (zero setup)
-- **Repository + Service** Layer architecture
+- **EF Core + Azure SQL** (production database)
+- **Repository + Service Layer** architecture
 - **DTOs + Validation Layer**
-- **ServiceResult pattern** for consistent responses
-- **Password Hashing** for for security
-- Minimal Program.cs
-- **No Swagger / OpenAPI** (removed for cleaner architecture)
-- Fully testable using **Postman, Insomnia**, or any REST client
+- **ServiceResult** pattern for consistent responses
+- **Password hashing** for secure credential storage
+- **Connection string stored as a secret in Azure Container Apps**
+- **Full Azure DevOps CI/CD pipeline** (build → test → Docker → ACR → ACA deploy)
+- **Dockerized** application for cloud deployment
+- **No Swagger / OpenAPI** (cleaner architecture)
+- Fully testable using **Postman**, **Insomnia**, or any REST client
 
 ---
 
 ## 🛠 Tech Stack
 
-- **.NET 10**
+- **.NET 8**
 - **ASP.NET Core Web API**
-- **EF Core InMemory**
-- **C# 13**
 - **Minimal Hosting Model**
+- **C# 13**
+- **Azure SQL (Production Database)**
+- **Azure Container Apps (ACA)**
+- **Azure Container Registry (ACR)**
+- **Azure DevOps CI/CD Pipeline**
+- **Docker (Containerized Deployment)**
 
 ---
 
@@ -243,9 +252,6 @@ Success
 Data
 Errors
 
-### EF Core InMemory
-Perfect for development and testing without external dependencies.
-
 ### JWT Authentication
 Secures protected endpoints using Bearer tokens.
 
@@ -344,22 +350,52 @@ The project includes a dedicated **Tests** folder containing unit tests for the 
 
 From the project root: dotnet test
 
-## Continuous Integration & Coverage Report
+## 🔄 Azure DevOps CI/CD Pipeline
 
-This project includes a complete CI pipeline using GitHub Actions.  
-Every push triggers:
+This project includes a full **Azure DevOps CI/CD pipeline** that builds, tests, packages, and deploys the API automatically to **Azure Container Apps**.
 
-- Automated build of the ASP.NET Core API  
-- Execution of all unit tests  
-- Generation of a Cobertura coverage file  
-- Conversion of the coverage file into a full HTML report  
-- Automatic publishing of the report using GitHub Pages
+### Pipeline Workflow
 
-GitHub Pages is configured to use **GitHub Actions** as the publishing source.  
-The CI workflow uploads the generated HTML coverage report as a Pages artifact, and GitHub Pages deploys it automatically.
+1. **Restore & Build**
+   - Restores NuGet packages
+   - Builds the .NET 8 solution
+
+2. **Run Unit Tests + Coverage**
+   - Executes all tests in `SampleApi.Test`
+   - Generates code coverage reports
+
+3. **Docker Image Build**
+   - Builds the API Docker image using the project’s Dockerfile
+
+4. **Push Image to Azure Container Registry (ACR)**
+   - Authenticates using Azure DevOps service connection
+   - Pushes the built image to your ACR instance
+
+5. **Inject Secrets**
+   - The Azure SQL connection string is stored in Azure as a **secret**
+   - The pipeline does **not** expose it in logs or YAML
+   - ACA reads it via:
+     ```
+     ConnectionStrings__sampleApi = secretref:defaultconnectionstring
+     ```
+
+6. **Deploy to Azure Container Apps**
+   - Creates a new ACA revision
+   - Applies environment variables
+   - Uses the latest image from ACR
+   - Ensures zero‑downtime rollout
+
+### Why This Matters
+
+This CI/CD setup mirrors real enterprise workflows:
+- No manual deployments  
+- No secrets in code  
+- Automatic versioning  
+- Cloud‑ready, production‑style pipeline  
+
 
 ### 📊 View the Coverage Report
-The latest test coverage report is available online:
+A coverage report is generated in Azure similar to this one:
 
 👉 https://mongolia144.github.io/SampleApi/coverage-report/index.html 
 or here
@@ -372,7 +408,6 @@ or here
 - Add role‑based authorization
 - Add registration
 - Add unit tests ( task ongoing).
-- Add CI/CD pipeline
 - Add API versioning
 
 ---
