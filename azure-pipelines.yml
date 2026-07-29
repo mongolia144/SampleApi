@@ -103,7 +103,7 @@ steps:
         az containerapp secret set \
           --name sampleapi \
           --resource-group sampleApi_AzureDevOps_Acr_rg \
-          --secrets "DefaultConnectionString=$(sampleapiDBConnectionString)"
+          --secrets "defaultconnectionstring=$(sampleapiDBConnectionstring)"
 
 # ---------------------------------------------------------
 # Bind secret to environment variable ConnectionStrings__sampleApi
@@ -119,7 +119,7 @@ steps:
       az containerapp envvar set \
         --name sampleapi \
         --resource-group sampleApi_AzureDevOps_Acr_rg \
-        --env-vars ConnectionStrings__sampleApi=secretref:DefaultConnectionString
+        --env-vars "ConnectionStrings__sampleApi=secretref:defaultconnectionstring"
 
 # ---------------------------------------------------------
 # Deploy to Azure Container Apps (update revision)
