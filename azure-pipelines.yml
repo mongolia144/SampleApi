@@ -98,12 +98,12 @@ steps:
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
-      echo "Setting ACA secret DefaultConnectionString..."
-      az containerapp secret set \
-        --name sampleapi \
-        --resource-group sampleApi_AzureDevOps_Acr_rg \
-        --secrets "DefaultConnectionString=$(sampleapiDBConnectionstring)"
-
+      inlineScript: |
+        echo "Setting ACA secret DefaultConnectionString..."
+        az containerapp secret set \
+          --name sampleapi \
+          --resource-group sampleApi_AzureDevOps_Acr_rg \
+          --secrets "DefaultConnectionString=$(sampleapiDBConnectionString)"
 
 # ---------------------------------------------------------
 # Bind secret to environment variable ConnectionStrings__sampleApi
