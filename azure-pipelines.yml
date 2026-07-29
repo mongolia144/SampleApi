@@ -92,7 +92,7 @@ steps:
 # Inject SQL connection string secret into ACA
 # ---------------------------------------------------------
 - task: AzureCLI@2
-  displayName: Set ACA secret: DefaultConnectionString
+  displayName: "Set ACA secret: DefaultConnectionString"
   inputs:
     azureSubscription: 'Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)'
     scriptType: bash
