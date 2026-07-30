@@ -278,6 +278,40 @@ A coverage report is generated in Azure:
 https://mongolia144.github.io/SampleApi/coverage-report/index.html
 
 ---
+## Swagger
+
+Swagger is available in **Development** and **Staging (UAT)** environments and disabled in **Production**.
+
+### Environments
+
+- **Development (local)**  
+  - URL: `http://localhost:<port>/swagger`  
+  - When running via `dotnet run` or Docker.
+
+- **Staging (Azure UAT)**  
+  - URL: `https://<your-aca-staging-url>/swagger`  
+  - Runs in Azure Container Apps with `ASPNETCORE_ENVIRONMENT=Staging`.
+
+- **Production (Azure)**  
+  - Swagger is disabled for security reasons.
+
+### Application configuration
+
+```csharp
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+Azure Container Apps environment
+Set the following environment variable in the Staging/UAT container app:
+
+ASPNETCORE_ENVIRONMENT=Staging
+
+
+
+---
 
 ## 📈 Future Improvements
 

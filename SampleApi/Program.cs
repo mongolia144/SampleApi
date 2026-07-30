@@ -7,6 +7,7 @@ using SampleApi.Interfaces.AuthInterfaces;
 using SampleApi.Services.AuthServices;
 using SampleApi.Interfaces.UserInterfaces;
 using SampleApi.Repositories;
+using SampleApi.Extensions;
 
 //using Microsoft.OpenApi.Models;
 
@@ -58,6 +59,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
+//Swagger
+builder.Services.AddSwaggerDocumentation();
+
+
 
 
 
@@ -93,8 +98,10 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 
