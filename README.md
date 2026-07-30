@@ -90,6 +90,8 @@ SampleApi/
 │   │     ├── MovieDTOAdd.cs
 │   │     ├── MovieDTORead.cs
 │   │     └── MovieDTOUpdate.cs
+│   ├── Extensions/
+│   │     └── SwaggerExtensions.cs
 │   ├── Interfaces/
 │   │      ├── IAuthService.cs
 │   │      ├── IMovieRepository.cs
