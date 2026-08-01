@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
 namespace SampleApi.Results;
 
 public class ServiceResult<T>
@@ -11,4 +13,15 @@ public class ServiceResult<T>
 
     public static ServiceResult<T> Fail(List<string> errors) =>
         new() { Success = false, Errors = errors };
+
+    public static string ErrorsToString(List<string> errors)
+    {
+        var errorString = "";
+        foreach(var error in errors)
+        {
+            errorString = errorString + error;
+        }
+        return errorString;
+    }
+    
 }

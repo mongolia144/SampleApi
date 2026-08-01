@@ -22,4 +22,22 @@ public class UserRepository : IUserRepository
         //we don not use .FindAsync(u => u.Email == email) because email is not a primary key
         return await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
+
+    public async Task Add(User user)
+    {
+        _db.Users.Add(user);
+        await _db.SaveChangesAsync();
+    }
+
+    public async Task Update(User user)
+    {
+        _db.Users.Update(user);
+        await _db.SaveChangesAsync();
+    }
+
+    public async Task Delete(User user)
+    {
+        _db.Users.Remove(user);
+        await _db.SaveChangesAsync();
+    }
 }

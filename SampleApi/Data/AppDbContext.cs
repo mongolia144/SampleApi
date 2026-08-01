@@ -19,7 +19,7 @@ public class AppDbContext : DbContext
     //            Id = "seed-user-1",
     //            Email = "test@example.com",
     //            Salt = "somesalt",
-    //            HashedPassword = "6e5605d42fe720882511feecd48a6a44f2110d9d4713e1b5c4c70ed7519f9519"
+    //            PasswordHash = "6e5605d42fe720882511feecd48a6a44f2110d9d4713e1b5c4c70ed7519f9519"
     //        }
     //    );
     //}

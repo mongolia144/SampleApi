@@ -4,3 +4,6 @@
 
 /SampleApi.sln
 .vs/
+.env
+.env.*
+

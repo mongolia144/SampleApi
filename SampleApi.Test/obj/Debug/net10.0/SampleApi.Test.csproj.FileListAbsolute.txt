@@ -1,4 +1,10 @@
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\bin\Debug\net10.0\CoverletSourceRootsMapping_SampleApi.Test
+C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.csproj.AssemblyReference.cache
+C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.AssemblyInfoInputs.cache
+C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.AssemblyInfo.cs
+C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.csproj.CoreCompileInputs.cache
+C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.sourcelink.json
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\bin\Debug\net10.0\testhost.dll
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\bin\Debug\net10.0\SampleApi.deps.json
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\bin\Debug\net10.0\SampleApi.runtimeconfig.json
@@ -141,15 +147,10 @@ C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\bin\Debug\net10
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\bin\Debug\net10.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\bin\Debug\net10.0\SampleApi.dll
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\bin\Debug\net10.0\SampleApi.pdb
-C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.csproj.AssemblyReference.cache
-C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.AssemblyInfoInputs.cache
-C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.AssemblyInfo.cs
-C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.csproj.CoreCompileInputs.cache
-C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.sourcelink.json
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleAp.06EEC10E.Up2Date
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.dll
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\refint\SampleApi.Test.dll
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.pdb
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\SampleApi.Test.genruntimeconfig.cache
 C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\obj\Debug\net10.0\ref\SampleApi.Test.dll
+C:\Users\mark_\source\repos\SampleApi_AzureDevOps\SampleApi.Test\bin\Debug\net10.0\Microsoft.Extensions.Logging.AzureAppServices.dll

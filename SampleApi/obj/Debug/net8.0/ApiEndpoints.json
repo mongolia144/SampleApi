@@ -113,5 +113,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SampleApi.Controllers.AuthController",
+    "Method": "Register",
+    "RelativePath": "auth/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginDTOAdd",
+        "Type": "SampleApi.DTOs.Auth.LoginDTOAdd",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

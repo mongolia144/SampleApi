@@ -187,6 +187,14 @@
           }
         }
       },
+      "Microsoft.Extensions.Logging.AzureAppServices/10.0.10": {
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Logging.AzureAppServices.dll": {
+            "assemblyVersion": "10.0.10.0",
+            "fileVersion": "10.0.1026.32716"
+          }
+        }
+      },
       "Microsoft.Identity.Client/4.56.0": {
         "dependencies": {
           "Microsoft.IdentityModel.Abstractions": "7.0.3"
@@ -800,6 +808,7 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.0",
           "Microsoft.EntityFrameworkCore.InMemory": "8.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.7",
+          "Microsoft.Extensions.Logging.AzureAppServices": "10.0.10",
           "Swashbuckle.AspNetCore": "10.2.3"
         },
         "runtime": {
@@ -907,6 +916,13 @@
       "sha512": "sha512-6gwbwmXkCb+IGxTQ81KqwGjN15r3bv7PLlb4Ox/cYDqdPFbHXMsk0zgtKyPCiXqkFH2LG7KpvVYUBlu4PyTKZQ==",
       "path": "microsoft.entityframeworkcore.sqlserver/8.0.7",
       "hashPath": "microsoft.entityframeworkcore.sqlserver.8.0.7.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Logging.AzureAppServices/10.0.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HfTQJ4FY5GHm4mYTch3OG59SQ2KuYeushlF9Xbyytxbnx0//kzZGT7ZrQhy75Ql3NReVq0IP4roX3HUIqbSvhw==",
+      "path": "microsoft.extensions.logging.azureappservices/10.0.10",
+      "hashPath": "microsoft.extensions.logging.azureappservices.10.0.10.nupkg.sha512"
     },
     "Microsoft.Identity.Client/4.56.0": {
       "type": "package",

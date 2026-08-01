@@ -4,7 +4,7 @@ using SampleApi.Validators;
 using SampleApi.Interfaces.MovieInterfaces;
 
 namespace SampleApi.Validators;
-public class MovieValidator: IMovieValidator
+public class MovieValidator: IValidator<Movie>
 {
     public ValidationResult Validate(Movie movie)
     {

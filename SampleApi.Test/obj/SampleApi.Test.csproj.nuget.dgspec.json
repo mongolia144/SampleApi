@@ -10,13 +10,14 @@
         "projectUniqueName": "C:\\Users\\mark_\\source\\repos\\SampleApi_AzureDevOps\\SampleApi.Test\\SampleApi.Test.csproj",
         "projectName": "SampleApi.Test",
         "projectPath": "C:\\Users\\mark_\\source\\repos\\SampleApi_AzureDevOps\\SampleApi.Test\\SampleApi.Test.csproj",
-        "packagesPath": "C:\\Users\\mark_\\.nuget\\packages\\",
+        "packagesPath": "C:\\root\\.nuget\\packages",
         "outputPath": "C:\\Users\\mark_\\source\\repos\\SampleApi_AzureDevOps\\SampleApi.Test\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
+          "C:\\Users\\mark_\\source\\repos\\SampleApi_AzureDevOps\\NuGet.Config",
           "C:\\Users\\mark_\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -31,6 +32,7 @@
         },
         "frameworks": {
           "net10.0": {
+            "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
               "C:\\Users\\mark_\\source\\repos\\SampleApi_AzureDevOps\\SampleApi\\SampleApi.csproj": {
@@ -49,10 +51,11 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
             "Microsoft.NET.Test.Sdk": {
@@ -92,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -376,13 +379,14 @@
         "projectUniqueName": "C:\\Users\\mark_\\source\\repos\\SampleApi_AzureDevOps\\SampleApi\\SampleApi.csproj",
         "projectName": "SampleApi",
         "projectPath": "C:\\Users\\mark_\\source\\repos\\SampleApi_AzureDevOps\\SampleApi\\SampleApi.csproj",
-        "packagesPath": "C:\\Users\\mark_\\.nuget\\packages\\",
+        "packagesPath": "C:\\root\\.nuget\\packages",
         "outputPath": "C:\\Users\\mark_\\source\\repos\\SampleApi_AzureDevOps\\SampleApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
+          "C:\\Users\\mark_\\source\\repos\\SampleApi_AzureDevOps\\NuGet.Config",
           "C:\\Users\\mark_\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -397,6 +401,7 @@
         },
         "frameworks": {
           "net8.0": {
+            "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {}
           }
@@ -411,10 +416,11 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "dependencies": {
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
@@ -434,6 +440,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.7, )"
+            },
+            "Microsoft.Extensions.Logging.AzureAppServices": {
+              "target": "Package",
+              "version": "[10.0.10, )"
             },
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
@@ -463,7 +473,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

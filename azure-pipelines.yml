@@ -38,6 +38,29 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
 
 # ---------------------------------------------------------
+# Build EF Core migration bundle
+# ---------------------------------------------------------
+- task: DotNetCoreCLI@2
+  displayName: Build EF migration bundle
+  inputs:
+    command: custom
+    custom: ef
+    arguments: "migrations bundle --project SampleApi --output efbundle"
+
+# ---------------------------------------------------------
+# ⭐ NEW: Run EF migration bundle against Azure SQL
+# ---------------------------------------------------------
+- task: Bash@3
+  displayName: Run EF migration bundle
+  inputs:
+    targetType: inline
+    script: |
+      echo "Running EF migration bundle..."
+      chmod +x efbundle
+
+      ./efbundle \
+        --connection "$(sampleapiDBConnectionstring)"
+# ---------------------------------------------------------
 # Test + Coverage
 # ---------------------------------------------------------
 - task: DotNetCoreCLI@2
@@ -98,41 +121,6 @@ steps:
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
-      inlineScript: |
-        echo "Setting ACA secret DefaultConnectionString..."
-        az containerapp secret set \
-          --name sampleapi \
-          --resource-group sampleApi_AzureDevOps_Acr_rg \
-          --secrets "defaultconnectionstring=$(sampleapiDBConnectionstring)"
-
-# ---------------------------------------------------------
-# Bind secret to environment variable ConnectionStrings__sampleApi
-# ---------------------------------------------------------
-- task: AzureCLI@2
-  displayName: Set ACA environment variable for connection string
-  inputs:
-    azureSubscription: 'Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)'
-    scriptType: bash
-    scriptLocation: inlineScript
-    inlineScript: |
-      echo "Binding secret to env var ConnectionStrings__sampleApi..."
-      az containerapp update \
-        --name sampleapi \
-        --resource-group sampleApi_AzureDevOps_Acr_rg \
-        --set-env-vars "ConnectionStrings__sampleApi=secretref:defaultconnectionstring"
-
-# ---------------------------------------------------------
-# Deploy to Azure Container Apps (update revision)
-# ---------------------------------------------------------
-- task: AzureCLI@2
-  displayName: Deploy to Azure Container Apps
-  inputs:
-    azureSubscription: 'Azure subscription 1(c13b401c-dde4-4298-ad6c-3ef836f847d5)'
-    scriptType: bash
-    scriptLocation: inlineScript
-    inlineScript: |
-      echo "Updating Container App revision..."
-      az containerapp update \
-        --name sampleapi \
-        --resource-group sampleApi_AzureDevOps_Acr_rg \
-        --image sampleapiregistry.azurecr.io/sampleapi:latest
+      echo "Setting ACA secret DefaultConnectionString..."
+      az containerapp secret set \
+        --name sampleapi

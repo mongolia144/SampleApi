@@ -68,7 +68,7 @@ Example stored fields:
 Id: seed-user-1
 Email: test@example.com
 Salt: somesalt
-HashedPassword: ef92b778ba5c9c3a5e8f1a9e4f4e8e2b6d5c1f2a3b4c5d6e7f8a9b0c1d2e3f4
+PasswordHash: ef92b778ba5c9c3a5e8f1a9e4f4e8e2b6d5c1f2a3b4c5d6e7f8a9b0c1d2e3f4
 
 
 ---
@@ -96,7 +96,7 @@ SampleApi/
 │   │      ├── IAuthService.cs
 │   │      ├── IMovieRepository.cs
 │   │      ├── IMovieService.cs
-│   │      ├── IMovieValidator.cs
+│   │      ├── IValidator.cs
 │   │      ├── IUserRepository.cs
 │   │      └── IPasswordHasher.cs
 │   ├── Mappings/
@@ -299,19 +299,128 @@ Swagger is available in **Development** and **Staging (UAT)** environments and d
 
 ### Application configuration
 
-```csharp
+```
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+```
 Azure Container Apps environment
 Set the following environment variable in the Staging/UAT container app:
 
 ASPNETCORE_ENVIRONMENT=Staging
 
 
+# 📘 SampleApi – Recent Updates
+
+## 🧩 User Registration & Application Logging
+The API now includes a **user registration endpoint** and structured **application‑level logging** inside the controllers.
+
+### Logged Events
+The following events are emitted using ASP.NET Core’s `ILogger<T>`:
+
+- **UserRegistered** — when a new user successfully registers  
+- **UserRegistrationFailed** — when registration fails  
+- **UserLoggedIn** — when a user successfully authenticates  
+- **UserLoginFailed** — when authentication fails  
+
+### Where Logs Appear
+- **Local debugging:** logs appear in the Visual Studio *Output* window or terminal  
+- **Azure deployment:** logs appear in  
+  - Azure Monitor  
+  - Log Analytics Workspace  
+  - `ContainerAppConsoleLogs` table  
+
+To enable Azure logging, configure diagnostics:
+
+- Container App → Monitoring → Diagnostics  
+- Enable **ContainerAppConsoleLogs → Log Analytics Workspace**
+
+---
+
+# 📘 SampleApi – Recent Updates
+
+## 🧩 User Registration & Application Logging
+The API now includes a **user registration endpoint** and structured **application‑level logging** inside the controllers.
+
+### Logged Events
+The following events are emitted using ASP.NET Core’s `ILogger<T>`:
+
+- **UserRegistered** — when a new user successfully registers  
+- **UserRegistrationFailed** — when registration fails  
+- **UserLoggedIn** — when a user successfully authenticates  
+- **UserLoginFailed** — when authentication fails  
+
+### Where Logs Appear
+- **Local debugging:** logs appear in the Visual Studio *Output* window or terminal  
+- **Azure deployment:** logs appear in  
+  - Azure Monitor  
+  - Log Analytics Workspace  
+  - `ContainerAppConsoleLogs` table  
+
+To enable Azure logging, configure diagnostics:
+
+- Container App → Monitoring → Diagnostics  
+- Enable **ContainerAppConsoleLogs → Log Analytics Workspace**
+
+---
+
+## 🗄 Azure SQL Auditing (Optional)
+The project supports viewing SQL‑level audit logs (e.g., SELECT, INSERT, UPDATE) in the **Log Analytics Workspace**.
+
+### How to Enable SQL Auditing
+To send SQL audit events to Log Analytics:
+
+### 1. Configure auditing at the **Azure SQL Server** level  
+- Azure Portal → SQL Server → Security → Auditing  
+- Enable auditing  
+- Select your Log Analytics Workspace
+
+### 2. Configure auditing at the **Azure SQL Database** level  
+- Azure Portal → SQL Database → Security → Auditing  
+- Enable auditing  
+- Select the same workspace
+
+Once configured, SQL audit events appear in:
+
+```
+SQLSecurityAuditEvents
+```
+
+inside the Log Analytics Workspace.
+
+---
+
+## 🛠 EF Core Migrations for Production
+The project includes updated **EF Core migrations** to support schema evolution in production environments.
+
+### Migration Workflow
+- Generate migrations:  
+  `dotnet ef migrations add <Name>`
+- Apply migrations:  
+  `dotnet ef database update`
+- Azure SQL fully supported  
+- Latest migration set stored in the `azure-migrations` folder
+
+This ensures production databases can be updated safely and consistently.
+
+---
+
+## 🐳 Local Development with Docker Compose
+The repository includes:
+
+- `docker-compose.yml`  
+- `docker-compose.override.yml`  
+- `.env` file for environment variables  
+
+### Features
+- Runs the API locally inside Docker containers  
+- Mirrors the Azure Container Apps environment  
+- Stores configuration values (connection strings, JWT secrets, etc.) in `.env`  
+- Supports debugging through Visual Studio or CLI
+
+This setup ensures your local environment behaves like your cloud environment.
 
 ---
 

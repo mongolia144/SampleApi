@@ -2,5 +2,5 @@ namespace SampleApi.Interfaces.AuthInterfaces;
 
 public interface IPasswordHasher
 {
-    string Hash(string password, string salt);
+    byte[] HashPassword(string password, byte[] salt);
 }

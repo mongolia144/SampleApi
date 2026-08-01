@@ -14,9 +14,9 @@ public class MovieService : IMovieService
     //If your method uses await, it must be async.
     //If your method returns a Task directly, it must NOT be async
     private readonly IMovieRepository _movieRepository;
-    private readonly IMovieValidator _movieValidator;
+    private readonly IValidator<Movie> _movieValidator;
 
-    public MovieService(IMovieRepository movieRepository, IMovieValidator movieValidator)
+    public MovieService(IMovieRepository movieRepository, IValidator<Movie> movieValidator)
     {
         _movieRepository = movieRepository;
         _movieValidator = movieValidator;

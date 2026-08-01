@@ -25,7 +25,7 @@ public class MovieServiceTests
         repoMock.Setup(r => r.GetById(id))
                 .ReturnsAsync(movie);
 
-        var validatorMock = new Mock<IMovieValidator>();
+        var validatorMock = new Mock<IValidator<Movie>>();
 
         var service = new MovieService(repoMock.Object, validatorMock.Object);
 
@@ -49,7 +49,7 @@ public class MovieServiceTests
         repoMock.Setup(r => r.GetById(id))
                 .ReturnsAsync((Movie?)null);
 
-        var validatorMock = new Mock<IMovieValidator>();
+        var validatorMock = new Mock<IValidator<Movie>>();
 
         var service = new MovieService(repoMock.Object, validatorMock.Object);
 
@@ -73,7 +73,7 @@ public class MovieServiceTests
         movieRepositiory_Mock.Setup(r => r.GetAll())
                 .ReturnsAsync(movies);
 
-        var validator_Mock = new Mock<IMovieValidator>();
+        var validator_Mock = new Mock<IValidator<Movie>>();
 
         var movieService = new MovieService(movieRepositiory_Mock.Object, validator_Mock.Object);
 
@@ -100,7 +100,7 @@ public class MovieServiceTests
         movieRepositiory_Mock.Setup(r => r.GetAll())
                 .ReturnsAsync(movies);
 
-        var validator_Mock = new Mock<IMovieValidator>();
+        var validator_Mock = new Mock<IValidator<Movie>>();
         // No validation is used in GetAll(), so no setup needed
 
         var movieService = new MovieService(movieRepositiory_Mock.Object, validator_Mock.Object);
@@ -132,7 +132,7 @@ public class MovieServiceTests
                 .Callback<Movie>(m => capturedEntity = m)
                 .Returns(Task.CompletedTask);
 
-        var validatorMock = new Mock<IMovieValidator>();
+        var validatorMock = new Mock<IValidator<Movie>>();
         validatorMock.Setup(v => v.Validate(It.IsAny<Movie>()))
                     .Returns(new ValidationResult
                     {
@@ -173,7 +173,7 @@ public class MovieServiceTests
         repoMock.Setup(r => r.Add(It.IsAny<Movie>()))
                 .Returns(Task.CompletedTask);   // repository returns Task, not DTO
 
-        var validatorMock = new Mock<IMovieValidator>();
+        var validatorMock = new Mock<IValidator<Movie>>();
         validatorMock.Setup(v => v.Validate(It.IsAny<Movie>()))
                     .Returns(new ValidationResult
                     {
@@ -203,7 +203,7 @@ public class MovieServiceTests
         // Arrange
         var movieDTOAdd = new MovieDTOAdd { Title = "A", Year = 1700 };
 
-        var validatorMock = new Mock<IMovieValidator>();
+        var validatorMock = new Mock<IValidator<Movie>>();
         validatorMock.Setup(v => v.Validate(It.IsAny<Movie>()))
                     .Returns(new ValidationResult
                     {
@@ -231,7 +231,7 @@ public class MovieServiceTests
         // Arrange
         var movieDTOAdd = new MovieDTOAdd { Title = "", Year = 2000 };
 
-        var validatorMock = new Mock<IMovieValidator>();
+        var validatorMock = new Mock<IValidator<Movie>>();
         validatorMock.Setup(v => v.Validate(It.IsAny<Movie>()))
                     .Returns(new ValidationResult
                     {
@@ -259,7 +259,7 @@ public class MovieServiceTests
         // Arrange
         var movieDTOAdd = new MovieDTOAdd { Title = "A", Year = 0 };
 
-        var validatorMock = new Mock<IMovieValidator>();
+        var validatorMock = new Mock<IValidator<Movie>>();
         validatorMock.Setup(v => v.Validate(It.IsAny<Movie>()))
                     .Returns(new ValidationResult
                     {
@@ -296,7 +296,7 @@ public class MovieServiceTests
         repoMock.Setup(r => r.Update(It.IsAny<Movie>()))
                 .Returns(Task.CompletedTask);
 
-        var validatorMock = new Mock<IMovieValidator>();
+        var validatorMock = new Mock<IValidator<Movie>>();
         validatorMock.Setup(v => v.Validate(It.IsAny<Movie>()))
                     .Returns(new ValidationResult
                     {
@@ -335,7 +335,7 @@ public class MovieServiceTests
         repoMock.Setup(r => r.Update(It.IsAny<Movie>()))
                 .Returns(Task.CompletedTask);
 
-        var validatorMock = new Mock<IMovieValidator>();
+        var validatorMock = new Mock<IValidator<Movie>>();
         // Validator should NOT be called, so no setup needed
 
         var service = new MovieService(repoMock.Object, validatorMock.Object);
@@ -370,7 +370,7 @@ public class MovieServiceTests
         repoMock.Setup(r => r.Delete(It.IsAny<Movie>()))
                 .Returns(Task.CompletedTask);
 
-        var validatorMock = new Mock<IMovieValidator>();
+        var validatorMock = new Mock<IValidator<Movie>>();
         // Validator is NOT used in Delete, so no setup needed
 
         var service = new MovieService(repoMock.Object, validatorMock.Object);
@@ -402,7 +402,7 @@ public class MovieServiceTests
         repoMock.Setup(r => r.Delete(It.IsAny<Movie>()))
                 .Returns(Task.CompletedTask);
 
-        var validatorMock = new Mock<IMovieValidator>();
+        var validatorMock = new Mock<IValidator<Movie>>();
         // Validator is NOT used in Delete, so no setup needed
 
         var service = new MovieService(repoMock.Object, validatorMock.Object);

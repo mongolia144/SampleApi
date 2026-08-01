@@ -1,13 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using SampleApi.Data;
-using SampleApi.Services.MovieServices;
-using SampleApi.Interfaces.MovieInterfaces;
-using SampleApi.Validators;
-using SampleApi.Interfaces.AuthInterfaces;
-using SampleApi.Services.AuthServices;
-using SampleApi.Interfaces.UserInterfaces;
-using SampleApi.Repositories;
 using SampleApi.Extensions;
+using SampleApi.Interfaces.AuthInterfaces;
+using SampleApi.Interfaces.MovieInterfaces;
+using SampleApi.Interfaces.UserInterfaces;
+using SampleApi.Models;
+using SampleApi.Repositories;
+using SampleApi.Services.AuthServices;
+using SampleApi.Services.MovieServices;
+using SampleApi.Validators;
 
 //using Microsoft.OpenApi.Models;
 
@@ -29,7 +30,8 @@ var audience = jwtSettings.GetValue<string>("Audience")
 
 // Register services
 builder.Services.AddScoped<IMovieService, MovieService>();
-builder.Services.AddScoped<IMovieValidator, MovieValidator>();
+builder.Services.AddScoped<IValidator<Movie>, MovieValidator>();
+builder.Services.AddScoped<IValidator<User>, UserValidator>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -50,7 +52,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 // EF Core SQL Azure with retry in case that there are transient connection issues
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("sampleApi"),
+        builder.Configuration.GetConnectionString("DefaultConnection"),
         sqlOptions => sqlOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
             maxRetryDelay: TimeSpan.FromSeconds(10),
@@ -61,6 +63,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //Swagger
 builder.Services.AddSwaggerDocumentation();
+
+// Loging: This ensures:
+// Console logs → Azure Container Apps,
+// Azure diagnostics → Azure Monitor
+// Everything → Log Analytics Workspace
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.AddAzureWebAppDiagnostics();
+
 
 
 
@@ -136,7 +148,7 @@ app.MapControllers();
 //        Console.WriteLine("Id: " + user.Id);
 //        Console.WriteLine("Email: " + user.Email);
 //        Console.WriteLine("Salt: " + user.Salt);
-//        Console.WriteLine("HashedPassword: " + user.HashedPassword);
+//        Console.WriteLine("PasswordHash: " + user.PasswordHash);
 //    }
 
 //}

@@ -6,11 +6,15 @@ namespace SampleApi.Services.AuthServices;
 
 public class PasswordHasher: IPasswordHasher
 {
-    public string Hash(string password, string salt)
+    public byte[] HashPassword(string password, byte[] salt)
     {
-        using var sha = SHA256.Create();
-        var combined = Encoding.UTF8.GetBytes(password + salt);
-        var hash = sha.ComputeHash(combined);
-        return Convert.ToHexString(hash).ToLower();
+        using var pbkdf2 = new Rfc2898DeriveBytes(
+            password,
+            salt,
+            100_000, // iterations
+            HashAlgorithmName.SHA256);
+
+        return pbkdf2.GetBytes(32); // 256-bit hash
     }
+
 }
