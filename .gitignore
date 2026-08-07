@@ -1,9 +1,19 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/SampleApi.sln
+﻿bin/
+obj/
 .vs/
-.env
-.env.*
+.vscode/
+.devcontainer/
+TestResults/
+publish/
+dist/
+*.user
+*.tmp
+*.bak
+*.old
+docker-compose.dcproj
+docker-compose.dcproj.user
+Dockerfile.original
+launchSettings.json
+
+
 
